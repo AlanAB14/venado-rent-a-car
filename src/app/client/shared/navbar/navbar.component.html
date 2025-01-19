@@ -1,0 +1,35 @@
+<div class="navbar">
+    <div class="navbar-image">
+        <img src="assets/images/logo.png" routerLink="'/'" alt="logo-p">
+    </div>
+    <div class="navbar-links">
+        <ul>
+            <li *ngFor="let item of items">
+                <a [routerLink]="item.path" routerLinkActive="selected">
+                    {{ item.text }}
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="navbar-responsive">
+    <div class="navbar-responsive__top">
+        <a routerLink="'/'">
+            <img src="./assets/images/logo-icon.png" alt="logo-p">
+        </a>
+        <div class="navbar-responsive__top__expand">
+            <img (click)="toggleMenu()" src="./assets/images/icon_menu.png" alt="">
+        </div>
+    </div>
+
+    <div class="navbar-responsive__body" [ngClass]="{expanded: isExpanded}" >
+        <ul class="animate__animated animate__fadeIn animate__faster" *ngIf="isExpanded">
+            <li *ngFor="let item of items">
+                <a [routerLink]="item.path" (click)="isExpanded = false" routerLinkActive="selected">
+                    {{ item.text }}
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

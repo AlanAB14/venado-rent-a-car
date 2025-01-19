@@ -1,0 +1,57 @@
+<div class="footer">
+    <div class="footer-images">
+        <a routerLink="info"><img src="assets/imgs/footer/proteccion.png" alt="proteccion-img"></a>
+        <a href="https://www.certacyc.com.ar/index.html" target="_blank"><img src="assets/imgs/footer/certac.png" alt="certac"></a>
+        <a href="https://bcra.gob.ar/BCRAyVos/Usuarios_Financieros.asp" target="_blank"><img src="assets/imgs/footer/usuarios-financieros.png" alt="u-financieros"></a>
+    </div>
+
+    <div class="footer-component p-responsive">
+        <div class="footer-component-header">
+            <div class="footer-component-header--img">
+                <img src="assets/imgs/logo-primicia.png" alt="logo-primicia">
+            </div>
+            <div class="footer-component-header--links">
+                <ul>
+                    <li><a [routerLink]="'nosotros'">Tarjeta Primicia</a></li>
+                    <li><a [routerLink]="'/contacto'" fragment="filialesSection">Filiales</a></li>
+                    <li><a [routerLink]="'contacto'">Contacto</a></li>
+                    <li><a [routerLink]="'denuncia'">Denuncia</a></li>
+                    <li><a target="_blank" href="assets/data/Primicia-UltimoContratoEmision.pdf">Contrato</a></li>
+                </ul>
+            </div>
+            <div class="footer-component-header--social">
+                <a href="https://www.facebook.com/tarjetaprimicia"><img src="assets/imgs/redes-facebook.png" alt="fb-img"></a>
+                <a href="https://www.instagram.com/tarjetaprimicia"><img src="assets/imgs/redes-instagram.png" alt="tw-img"></a>
+            </div>
+        </div>
+        <div class="footer-component-body">
+            <div class="footer-component-body-contact">
+                <div class="footer-component-body-contact--title">
+                    <p>Contactanos:</p>
+                </div>
+                <div class="footer-component-body-contact--data">
+                    <p>Email: casacentral.com.ar</p>
+                    <p>Teléfono: 0810-888-2222</p>
+                    <p>Casa Central: Mitre 664 Venado Tuerto, Santa Fe, Arg.</p>
+                </div>
+            </div>
+            <div class="footer-component-body-subscribe">
+                <input type="text" [(ngModel)]="email" placeholder="Email">
+                <button (click)="subcribir()">Suscribite</button>
+            </div>
+        </div>
+        <div class="footer-component-body-responsive">
+            <ul>
+                <li><a [routerLink]="'nosotros'">Tarjeta Primicia</a></li>
+                <li><a [routerLink]="'/contacto'" fragment="filialesSection">Filiales</a></li>
+                <li><a [routerLink]="'contacto'">Contacto</a></li>
+                <li><a [routerLink]="'denuncia'">Denuncia</a></li>
+            </ul>
+        </div>
+        <hr class="separator">
+        <div class="footer-component-copy">
+            <p>© 2024 <a target="_blank" href="https://www.linkedin.com/in/alan-bersia">Alan Bersia</a>. All Rights Reserved.</p>
+            <p>Políticas de privacidad</p>
+        </div>
+    </div>
+</div>

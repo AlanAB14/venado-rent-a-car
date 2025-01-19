@@ -1,1 +1,26 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --green: #81BD41;
+  --dark-green: #5E9424;
+  --orange: #FF9900;
+  --blue: #3C5185;
+  --orange-gradient: linear-gradient(253deg, #FEBF4E 25.78%, #FEB840 92.19%);
+  --purple-gradient: linear-gradient(74deg, #725287 4.43%, #9A7AB6 93.16%);
+}
+
+html {
+  font-size: 100%;
+  /* 100% = 16px */
+  position: relative;
+
+  @media (max-width: 1200px) {
+      font-size: 87.5%;
+  }
+
+  @media (max-width: 1000px) {
+      font-size: 75%;
+  }
+}
