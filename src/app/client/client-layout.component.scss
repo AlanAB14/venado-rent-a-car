@@ -1,3 +1,7 @@
-:host {
-  display: block;
+.client-content {
+  padding-top: 5rem;
+
+  @media (max-width: 768px) {
+    padding-top: 0rem;
+  }
 }

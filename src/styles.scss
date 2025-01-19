@@ -1,6 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "primeicons/primeicons.css";
+
+@font-face {
+  font-family: 'Archivo';
+  src: url('./assets/fonts/Archivo/static/Archivo-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Lato';
+  src: url('./assets/fonts/Lato/Lato-Regular.ttf') format('truetype');
+}
 
 :root {
   --green: #81BD41;
@@ -9,6 +20,7 @@
   --blue: #3C5185;
   --orange-gradient: linear-gradient(253deg, #FEBF4E 25.78%, #FEB840 92.19%);
   --purple-gradient: linear-gradient(74deg, #725287 4.43%, #9A7AB6 93.16%);
+  --home-gradient: linear-gradient(to right, #2B2D42, rgba(0, 145, 173, 0.80));
 }
 
 html {
