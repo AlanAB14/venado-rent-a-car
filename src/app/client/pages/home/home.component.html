@@ -1,3 +1,26 @@
 <div class="home">
   <header-component />
 </div>
+
+<div class="cards-section flex justify-center w-full pt-24 px-6 sm:px-0">
+  <div class="container flex flex-col gap-4 md:gap-0 md:flex-row justify-around items-center">
+    <div class="w-full sm:w-3/4 md:w-2/5">
+      <card-type-vehicle [title]="'Particular'" [image]="'corolla.png'" [bgColor]="'var(--orange-gradient)'"  />
+    </div>
+    <div class="w-full sm:w-3/4 md:w-2/5">
+      <card-type-vehicle [title]="'Corporativo'" [image]="'hilux.png'" [bgColor]="'var(--purple-gradient)'"  />
+    </div>
+  </div>
+</div>
+
+<div class="rent-section flex justify-center w-full pt-24 px-6 sm:px-0">
+  <div class="container">
+    <div class="title-box w-fit flex flex-col">
+      <div class="title w-fit"><strong>Alquilá el vehículo</strong></div>
+      <div class="subtitle w-fit">que se adapte a tus necesidades</div>
+    </div>
+    <div class="search-box mt-6">
+      <search-box />
+    </div>
+  </div>
+</div>
