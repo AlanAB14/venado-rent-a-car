@@ -8,6 +8,10 @@ export const routes: Routes = [
       {
         path: '',
         loadComponent: () => import('./client/pages/home/home.component')
+      },
+      {
+        path: 'nosotros',
+        loadComponent: () => import('./client/pages/nosotros/nosotros.component')
       }
     ]
   }

@@ -13,9 +13,9 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
     ReactiveFormsModule
   ],
   template: `
-    <div class="search-box flex justify-between items-center">
+    <div class="search-box flex flex-col gap-6 sm:gap-0 sm:flex-row justify-between items-center">
       <div class="form-sectionflex w-full">
-        <form [formGroup]="searchForm" class="flex flex-col lg:flex-row justify-between gap-6 w-3/4">
+        <form [formGroup]="searchForm" class="flex flex-col lg:flex-row justify-between gap-6 w-full sm:w-3/4">
           <p-floatlabel variant="on" class="w-full">
             <p-select [options]="vehicleTypes()" id="type" formControlName="type" optionLabel="label" optionValue="value"  class="w-full " />
             <label for="type">Tipo</label>
@@ -33,7 +33,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
         </form>
       </div>
       <div class="button-section">
-        <button class="hover:opacity-80">Buscar</button>
+        <button class="button-rent hover:opacity-80">Buscar</button>
       </div>
     </div>
 
@@ -50,16 +50,8 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 
     .button-section {
       button {
-        padding: .75rem 3rem;
-        border-radius: 2.5rem;
         background: #3C5185;
         color: #FEFEFE;
-        text-align: center;
-        font-family: Archivo;
-        font-size: 1.2rem;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 180%; /* 2.7rem */
       }
     }
     `

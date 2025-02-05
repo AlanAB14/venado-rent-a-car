@@ -9,3 +9,26 @@
     letter-spacing: -0.035rem;
   }
 }
+
+.contact-section {
+  .title-contact {
+    color: #3C5185;
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: Archivo;
+    font-size: 3rem;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 3.999rem; /* 133.3% */
+    text-transform: capitalize;
+  }
+
+  .subtitle-contact {
+    color: var(--Text-Body, #798196);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: Archivo;
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.6875rem; /* 168.75% */
+  }
+}

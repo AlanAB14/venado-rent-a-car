@@ -1,57 +1,59 @@
-<div class="footer">
-    <div class="footer-images">
-        <a routerLink="info"><img src="assets/imgs/footer/proteccion.png" alt="proteccion-img"></a>
-        <a href="https://www.certacyc.com.ar/index.html" target="_blank"><img src="assets/imgs/footer/certac.png" alt="certac"></a>
-        <a href="https://bcra.gob.ar/BCRAyVos/Usuarios_Financieros.asp" target="_blank"><img src="assets/imgs/footer/usuarios-financieros.png" alt="u-financieros"></a>
+<div class="footer flex flex-col mt-12 sm:mt-24">
+  <div class="footer-content container flex flex-col items-center sm:items-start sm:flex-row justify-center gap-16 md:gap-24 py-12">
+    <div class="footer__followUs flex flex-col gap-6">
+      <div class="header text-center sm:text-start">Follow Us</div>
+      <div class="body flex gap-6 justify-center sm:justify-start">
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+          <path d="M21.4844 2.73438H3.51562C3.0835 2.73438 2.73438 3.0835 2.73438 3.51562V21.4844C2.73438 21.9165 3.0835 22.2656 3.51562 22.2656H21.4844C21.9165 22.2656 22.2656 21.9165 22.2656 21.4844V3.51562C22.2656 3.0835 21.9165 2.73438 21.4844 2.73438ZM19.2285 8.43506H17.6685C16.4453 8.43506 16.2085 9.01611 16.2085 9.8706V11.7529H19.1284L18.7476 14.6997H16.2085V22.2656H13.1641V14.7021H10.6177V11.7529H13.1641V9.58008C13.1641 7.05811 14.7046 5.68359 16.9556 5.68359C18.0347 5.68359 18.96 5.76416 19.231 5.80078V8.43506H19.2285Z" fill="#F8F8F8"/>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+          <path d="M13.5711 2.08429C14.3312 2.08137 15.0914 2.08901 15.8513 2.10721L16.0534 2.1145C16.2867 2.12283 16.5169 2.13325 16.7951 2.14575C17.9034 2.19783 18.6597 2.37283 19.3232 2.63012C20.0107 2.89471 20.5899 3.25304 21.169 3.83221C21.6986 4.35263 22.1084 4.98215 22.3701 5.677C22.6274 6.34054 22.8024 7.09783 22.8544 8.20616C22.8669 8.48325 22.8774 8.7145 22.8857 8.94783L22.8919 9.14991C22.9104 9.90949 22.9184 10.6693 22.9159 11.4291L22.9169 12.2062V13.5707C22.9195 14.3309 22.9115 15.091 22.893 15.851L22.8867 16.053C22.8784 16.2864 22.868 16.5166 22.8555 16.7947C22.8034 17.903 22.6263 18.6593 22.3701 19.3228C22.1093 20.0184 21.6993 20.6485 21.169 21.1687C20.6482 21.6982 20.0183 22.108 19.3232 22.3697C18.6597 22.627 17.9034 22.802 16.7951 22.8541C16.5169 22.8666 16.2867 22.877 16.0534 22.8853L15.8513 22.8916C15.0914 22.9101 14.3313 22.9181 13.5711 22.9155L12.794 22.9166H11.4305C10.6703 22.9191 9.9102 22.9112 9.15028 22.8926L8.94819 22.8864C8.70091 22.8774 8.45368 22.867 8.20652 22.8551C7.09819 22.803 6.34194 22.626 5.67736 22.3697C4.98224 22.1086 4.35261 21.6987 3.83257 21.1687C3.30241 20.6481 2.89218 20.0182 2.63048 19.3228C2.37319 18.6593 2.19819 17.903 2.14611 16.7947C2.13451 16.5475 2.12409 16.3003 2.11486 16.053L2.10965 15.851C2.09045 15.091 2.08176 14.3309 2.08361 13.5707V11.4291C2.0807 10.6693 2.08834 9.90949 2.10653 9.14991L2.11382 8.94783C2.12215 8.7145 2.13257 8.48325 2.14507 8.20616C2.19715 7.09679 2.37215 6.34158 2.62944 5.677C2.89129 4.98181 3.30232 4.35246 3.83361 3.83325C4.35329 3.30278 4.98253 2.89218 5.67736 2.63012C6.34194 2.37283 7.09715 2.19783 8.20652 2.14575L8.94819 2.1145L9.15028 2.10929C9.90984 2.09009 10.6696 2.08141 11.4294 2.08325L13.5711 2.08429ZM12.5003 7.29262C11.8102 7.28286 11.125 7.41036 10.4846 7.66769C9.84423 7.92503 9.26137 8.30708 8.76991 8.79164C8.27845 9.2762 7.88819 9.8536 7.62182 10.4903C7.35546 11.127 7.21829 11.8103 7.21829 12.5004C7.21829 13.1906 7.35546 13.8739 7.62182 14.5106C7.88819 15.1473 8.27845 15.7247 8.76991 16.2092C9.26137 16.6938 9.84423 17.0758 10.4846 17.3332C11.125 17.5905 11.8102 17.718 12.5003 17.7082C13.8816 17.7082 15.2064 17.1595 16.1831 16.1828C17.1599 15.206 17.7086 13.8813 17.7086 12.4999C17.7086 11.1186 17.1599 9.79382 16.1831 8.81707C15.2064 7.84031 13.8816 7.29262 12.5003 7.29262ZM12.5003 9.37596C12.9154 9.36831 13.3279 9.44345 13.7136 9.597C14.0993 9.75056 14.4506 9.97944 14.7469 10.2703C15.0432 10.5611 15.2786 10.9081 15.4393 11.2909C15.6 11.6737 15.6828 12.0847 15.6828 12.4999C15.6829 12.9151 15.6003 13.3261 15.4397 13.709C15.2791 14.0919 15.0439 14.4389 14.7477 14.7298C14.4515 15.0208 14.1003 15.2498 13.7146 15.4035C13.3289 15.5571 12.9164 15.6324 12.5013 15.6249C11.6725 15.6249 10.8777 15.2957 10.2916 14.7096C9.70556 14.1236 9.37632 13.3287 9.37632 12.4999C9.37632 11.6711 9.70556 10.8763 10.2916 10.2902C10.8777 9.70415 11.6725 9.37491 12.5013 9.37491L12.5003 9.37596ZM17.969 5.73012C17.633 5.74357 17.3152 5.88653 17.0822 6.12905C16.8491 6.37157 16.719 6.69485 16.719 7.03116C16.719 7.36748 16.8491 7.69076 17.0822 7.93328C17.3152 8.1758 17.633 8.31876 17.969 8.33221C18.3144 8.33221 18.6456 8.19502 18.8897 7.95083C19.1339 7.70665 19.2711 7.37546 19.2711 7.03012C19.2711 6.68479 19.1339 6.3536 18.8897 6.10941C18.6456 5.86522 18.3144 5.72804 17.969 5.72804V5.73012Z" fill="#F8F8F8"/>
+        </svg>
+      </div>
     </div>
-
-    <div class="footer-component p-responsive">
-        <div class="footer-component-header">
-            <div class="footer-component-header--img">
-                <img src="assets/imgs/logo-primicia.png" alt="logo-primicia">
-            </div>
-            <div class="footer-component-header--links">
-                <ul>
-                    <li><a [routerLink]="'nosotros'">Tarjeta Primicia</a></li>
-                    <li><a [routerLink]="'/contacto'" fragment="filialesSection">Filiales</a></li>
-                    <li><a [routerLink]="'contacto'">Contacto</a></li>
-                    <li><a [routerLink]="'denuncia'">Denuncia</a></li>
-                    <li><a target="_blank" href="assets/data/Primicia-UltimoContratoEmision.pdf">Contrato</a></li>
-                </ul>
-            </div>
-            <div class="footer-component-header--social">
-                <a href="https://www.facebook.com/tarjetaprimicia"><img src="assets/imgs/redes-facebook.png" alt="fb-img"></a>
-                <a href="https://www.instagram.com/tarjetaprimicia"><img src="assets/imgs/redes-instagram.png" alt="tw-img"></a>
-            </div>
-        </div>
-        <div class="footer-component-body">
-            <div class="footer-component-body-contact">
-                <div class="footer-component-body-contact--title">
-                    <p>Contactanos:</p>
-                </div>
-                <div class="footer-component-body-contact--data">
-                    <p>Email: casacentral.com.ar</p>
-                    <p>Teléfono: 0810-888-2222</p>
-                    <p>Casa Central: Mitre 664 Venado Tuerto, Santa Fe, Arg.</p>
-                </div>
-            </div>
-            <div class="footer-component-body-subscribe">
-                <input type="text" [(ngModel)]="email" placeholder="Email">
-                <button (click)="subcribir()">Suscribite</button>
-            </div>
-        </div>
-        <div class="footer-component-body-responsive">
-            <ul>
-                <li><a [routerLink]="'nosotros'">Tarjeta Primicia</a></li>
-                <li><a [routerLink]="'/contacto'" fragment="filialesSection">Filiales</a></li>
-                <li><a [routerLink]="'contacto'">Contacto</a></li>
-                <li><a [routerLink]="'denuncia'">Denuncia</a></li>
-            </ul>
-        </div>
-        <hr class="separator">
-        <div class="footer-component-copy">
-            <p>© 2024 <a target="_blank" href="https://www.linkedin.com/in/alan-bersia">Alan Bersia</a>. All Rights Reserved.</p>
-            <p>Políticas de privacidad</p>
-        </div>
+    <div class="footer__contactUs flex flex-col gap-6">
+      <div class="header text-center sm:text-start">Contactanos</div>
+      <div class="body max-w-64 text-center sm:text-start">
+        Marcos Ciani 3236. Venado Tuerto (2600), Santa Fe - Argentina.
+        info&#64;venadorentacar.com.ar
+        (03462) 435925 / 437437
+      </div>
     </div>
+    <div class="footer__sections flex flex-col gap-6">
+      <div class="header text-center sm:text-start">Home</div>
+      <div class="body grid grid-cols-1 sm:grid-cols-2 gap-4 text-center sm:text-start">
+        <div class="cursor-pointer">Nosotros</div>
+        <div class="cursor-pointer">Empresas</div>
+        <div class="cursor-pointer">Flota</div>
+        <div class="cursor-pointer">Contacto</div>
+        <div class="cursor-pointer">Servicios</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright flex flex-col sm:flex-row justify-around py-5">
+    <div class="copy">Copyright © 2023. All right reserved</div>
+    <div class="compatibility flex gap-2 items-center">
+      Compatible With:
+      <svg xmlns="http://www.w3.org/2000/svg" width="29" height="25" viewBox="0 0 29 25" fill="none">
+        <g clip-path="url(#clip0_1002_101)">
+          <path d="M25.7812 0H2.34375C1.0498 0 0 1.0498 0 2.34375V17.9688C0 19.2627 1.0498 20.3125 2.34375 20.3125H11.7188L10.9375 22.6562H7.42188C6.77246 22.6562 6.25 23.1787 6.25 23.8281C6.25 24.4775 6.77246 25 7.42188 25H20.7031C21.3525 25 21.875 24.4775 21.875 23.8281C21.875 23.1787 21.3525 22.6562 20.7031 22.6562H17.1875L16.4062 20.3125H25.7812C27.0752 20.3125 28.125 19.2627 28.125 17.9688V2.34375C28.125 1.0498 27.0752 0 25.7812 0ZM25 17.1875H3.125V3.125H25V17.1875Z" fill="#FEFEFE"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_1002_101">
+            <rect width="28.125" height="25" fill="white"/>
+          </clipPath>
+        </defs>
+      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="25" viewBox="0 0 17 25" fill="none">
+        <g clip-path="url(#clip0_1002_99)">
+          <path d="M14.1982 0H3.26074C1.9668 0 0.916992 1.0498 0.916992 2.34375V22.6562C0.916992 23.9502 1.9668 25 3.26074 25H14.1982C15.4922 25 16.542 23.9502 16.542 22.6562V2.34375C16.542 1.0498 15.4922 0 14.1982 0ZM8.72949 23.4375C7.86523 23.4375 7.16699 22.7393 7.16699 21.875C7.16699 21.0107 7.86523 20.3125 8.72949 20.3125C9.59375 20.3125 10.292 21.0107 10.292 21.875C10.292 22.7393 9.59375 23.4375 8.72949 23.4375ZM14.1982 18.1641C14.1982 18.4863 13.9346 18.75 13.6123 18.75H3.84668C3.52441 18.75 3.26074 18.4863 3.26074 18.1641V2.92969C3.26074 2.60742 3.52441 2.34375 3.84668 2.34375H13.6123C13.9346 2.34375 14.1982 2.60742 14.1982 2.92969V18.1641Z" fill="#FEFEFE"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_1002_99">
+            <rect width="15.625" height="25" fill="white" transform="translate(0.916992)"/>
+          </clipPath>
+        </defs>
+      </svg>
+    </div>
+  </div>
 </div>

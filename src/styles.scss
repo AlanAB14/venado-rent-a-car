@@ -33,3 +33,39 @@ html {
   }
 
 }
+
+.page-section {
+  padding-top: 7rem;
+
+  @media (max-width:1366px) {
+    padding-top: 3rem;
+  }
+}
+
+.text-lato {
+  font-family: Lato;
+}
+
+.text-archivo {
+  font-family: Archivo;
+}
+
+.color-blue {
+  color: var(--blue);
+}
+
+.button-rent {
+  padding: .75rem 3rem;
+  border-radius: 2.5rem;
+  text-align: center;
+  font-family: Archivo;
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 180%; /* 2.7rem */
+
+  @media (max-width: 1366px) {
+    padding: .5rem 2rem;
+    font-size: 1rem;
+  }
+}
