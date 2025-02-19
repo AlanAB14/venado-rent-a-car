@@ -24,20 +24,16 @@ export class NavbarComponent {
 
   items: ItemMenu[] = [
     {
+      path: 'servicio',
+      text: 'Servicio'
+    },
+    {
+      path: 'flota',
+      text: 'Flota'
+    },
+    {
       path: 'nosotros',
       text: 'Nosotros'
-    },
-    {
-      path: 'comercios',
-      text: 'Comercios'
-    },
-    {
-      path: 'promociones',
-      text: 'Promociones'
-    },
-    {
-      path: 'ayuda',
-      text: 'Ayuda y Seguridad'
     },
     {
       path: 'contacto',

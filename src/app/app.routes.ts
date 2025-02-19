@@ -12,7 +12,11 @@ export const routes: Routes = [
       {
         path: 'nosotros',
         loadComponent: () => import('./client/pages/nosotros/nosotros.component')
-      }
+      },
+      {
+        path: 'flota',
+        loadComponent: () => import('./client/pages/flota/flota.component')
+      },
     ]
   }
 ];

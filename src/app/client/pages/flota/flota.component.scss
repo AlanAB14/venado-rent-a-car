@@ -1,0 +1,17 @@
+.flota {
+  .title {
+    color: #3c4242;
+    font-family: Archivo;
+    font-style: normal;
+    font-weight: 700;
+  }
+}
+
+
+vehicle-card {
+  @media (max-width: 640px) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
