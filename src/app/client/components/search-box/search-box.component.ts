@@ -1,26 +1,31 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { SelectModule } from 'primeng/select';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { DatePickerModule } from 'primeng/datepicker';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'search-box',
   imports: [
     SelectModule,
     FloatLabelModule,
-    DatePickerModule,
+    InputTextModule,
     ReactiveFormsModule
   ],
   template: `
     <div class="search-box flex flex-col gap-6 sm:gap-0 sm:flex-row justify-between items-center">
-      <div class="form-sectionflex w-full">
+      <div class="form-section flex w-full">
         <form [formGroup]="searchForm" class="flex flex-col lg:flex-row justify-between gap-6 w-full sm:w-3/4">
           <p-floatlabel variant="on" class="w-full">
-            <p-select [options]="vehicleTypes()" id="type" formControlName="type" optionLabel="label" optionValue="value"  class="w-full " />
+            <p-select [options]="vehicleTypes()" id="type" formControlName="type" optionLabel="label" optionValue="value"  class="w-full" />
             <label for="type">Tipo</label>
           </p-floatlabel>
+          <p-floatlabel variant="on" class="w-full">
+            <input pInputText type="text" formControlName="makeModel" id="makeModelLabel" class="w-full" />
+            <label for="makeModelLabel">Marca/Modelo</label>
+          </p-floatlabel>
 
+<!--
           <p-floatlabel variant="on" class="w-full">
             <p-datepicker inputId="calendar-12h" id="dateStart" dateFormat="dd/mm/yy" formControlName="dateStart" styleClass="w-full"  [showTime]="true" [hourFormat]="'12'" />
             <label for="dateStart">Fecha de retiro</label>
@@ -29,7 +34,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
           <p-floatlabel variant="on" class="w-full">
             <p-datepicker inputId="calendar-12h" id="dateEnd" dateFormat="dd/mm/yy" formControlName="dateEnd" styleClass="w-full" [showTime]="true" />
             <label for="dateEnd">Fecha de devolución</label>
-          </p-floatlabel>
+          </p-floatlabel> -->
         </form>
       </div>
       <div class="button-section">
@@ -82,14 +87,12 @@ export class SearchBoxComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
   }
 
   initForm() {
     this.searchForm = this.fb.group({
       type: new FormControl<any>(null, [Validators.required]),
-      dateStart: new FormControl<Date[] | null>(null, [Validators.required]),
-      dateEnd: new FormControl<Date[] | null>(null, [Validators.required]),
+      makeModel: new FormControl<null>(null, [Validators.required]),
     })
   }
 }

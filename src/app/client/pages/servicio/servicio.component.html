@@ -1,0 +1,44 @@
+<div class="page-section">
+  <div class="vehicle-data container flex flex-col">
+    <div class="flex items-center gap-4">
+      <img class="w-5" src="assets/images/title-item-orange.png" alt="title">
+      <div class="upper-title text-xl text-[#F90]">Particular</div>
+    </div>
+
+    <div class="vehicle-name text-5xl my-4 text-archivo text-[#F90]">Toyota <strong>Etios Se</strong></div>
+
+    <div class="vehicle-image flex justify-center">
+      <div class="card">
+        <p-galleria [value]="images()" [showThumbnailNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }" [numVisible]="3">
+            <ng-template #item let-item>
+                <img [src]="item.itemImageSrc" style="width: 100%; display: block;"/>
+            </ng-template>
+            <ng-template #thumbnail let-item>
+                <img [src]="item.thumbnailImageSrc" style="width: 30%; display: block;" />
+            </ng-template>
+        </p-galleria>
+      </div>
+    </div>
+
+    <div class="vehicle-description mt-14 flex flex-col sm:flex-row justify-center gap-6">
+      <div class="flex flex-col gap-2 w-2/5">
+        <div class="text-archivo text-[#F90] font-bold text-xl">Confort & Tecnología</div>
+        <div class="text-archivo text-[#6F6D71] text-base">Audio con pantalla táctil de 7” y conectividad: Apple CarPlay® y Android Auto® Disponible en versiones XLS Pack. Disponible sólo por conexión USB.</div>
+      </div>
+      <div class="flex flex-col gap-2 w-2/5">
+        <div class="text-archivo text-[#F90] font-bold text-xl">Seguridad</div>
+        <div class="text-archivo text-[#6F6D71] text-base">Sistema de anclaje ISOFIX x2 en asientos traseros. Airbag conductor y acompañante. Control de estabilidad (VSC), Control de Tracción (TRC) y </div>
+      </div>
+    </div>
+
+    <div class="vehicle-features mt-14">
+      <div class="flex items-center gap-4">
+        <img class="w-6 h-fit" src="assets/images/palanca-de-cambios.png" alt="palanca">
+        <div class="flex flex-col gap-1">
+          <div class="text-sm text-archivo text-[#6F6D71]">Performance</div>
+          <div class="text-sm text-archivo">Caja Manual de 6 marchas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

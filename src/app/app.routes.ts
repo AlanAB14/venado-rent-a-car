@@ -17,6 +17,10 @@ export const routes: Routes = [
         path: 'flota',
         loadComponent: () => import('./client/pages/flota/flota.component')
       },
+      {
+        path: 'servicio',
+        loadComponent: () => import('./client/pages/servicio/servicio.component')
+      },
     ]
   }
 ];
