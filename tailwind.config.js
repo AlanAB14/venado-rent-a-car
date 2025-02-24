@@ -4,7 +4,12 @@ module.exports = {
     "./src/**/*.{html,ts}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        '2xs': '300px',
+        'xs': '480px'
+      }
+    },
     container: {
       center: true,
       padding: '1rem',

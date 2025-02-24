@@ -21,6 +21,18 @@ export const routes: Routes = [
         path: 'servicio',
         loadComponent: () => import('./client/pages/servicio/servicio.component')
       },
+      {
+        path: 'empresas',
+        loadComponent: () => import('./client/pages/empresas/empresas.component')
+      },
+      {
+        path: 'contacto',
+        loadComponent: () => import('./client/pages/contacto/contacto.component')
+      },
+      {
+        path: 'checkout',
+        loadComponent: () => import('./client/pages/checkout/checkout.component')
+      },
     ]
   }
 ];

@@ -41,8 +41,19 @@ import { ChipModule } from 'primeng/chip';
       }
     }
 
+    .card {
+      &:hover {
+        cursor:pointer;
+        .box {
+          box-shadow: 0px 8px 8px 0px rgba(0, 0, 0, 0.25);
+          transform: translateY(-2px);
+        }
+      }
+    }
+
     .box {
       box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+      transition: all .2s;
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,

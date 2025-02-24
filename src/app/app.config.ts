@@ -1,10 +1,18 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { InMemoryScrollingFeature, InMemoryScrollingOptions, provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
 import { MyPreset } from '../myThemePrime';
 
+
+
+const scrollConfig: InMemoryScrollingOptions = {
+  scrollPositionRestoration: 'top',
+  anchorScrolling: 'enabled',
+};
+
+const inMemoryScrollingFeature: InMemoryScrollingFeature = withInMemoryScrolling(scrollConfig);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -64,6 +72,6 @@ export const appConfig: ApplicationConfig = {
                 preset: MyPreset,
             }
         }),
-    provideRouter(routes)
+        provideRouter(routes, inMemoryScrollingFeature)
   ]
 };

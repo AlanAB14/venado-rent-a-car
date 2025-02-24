@@ -5,10 +5,12 @@ import {
   OnInit,
 } from '@angular/core';
 import { GalleriaModule } from 'primeng/galleria';
+import { DividerModule } from 'primeng/divider';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-servicio',
-  imports: [GalleriaModule],
+  imports: [GalleriaModule, DividerModule, RouterModule],
   templateUrl: './servicio.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
@@ -38,6 +40,20 @@ import { GalleriaModule } from 'primeng/galleria';
       ::ng-deep .p-galleria-thumbnails-content {
         padding: 0.25rem!important;
       }
+
+      .search-box {
+      border-radius: .125rem;
+      background: #FFF;
+      box-shadow: 0rem 1.9375rem 5.0625rem 0rem rgba(37, 37, 37, 0.1);
+      padding: 1rem 2rem;
+    }
+
+    .button-section {
+      button {
+        background: #3C5185;
+        color: #FEFEFE;
+      }
+    }
     `,
   ],
 })

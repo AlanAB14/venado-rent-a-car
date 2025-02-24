@@ -1,0 +1,12 @@
+.bg-primary {
+  background-color: #F90;
+  i {
+    color: white;
+  }
+}
+
+::ng-deep p-datepicker {
+  span {
+    width: 100%;
+  }
+}

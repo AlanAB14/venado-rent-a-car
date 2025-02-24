@@ -10,7 +10,7 @@ import { InputTextModule } from 'primeng/inputtext';
     <div class="contact-box w-full">
       <div class="contact-box__content flex flex-col lg:flex-row justify-around xl:justify-between gap-16">
         <div class="contact-box__content__form w-full sm:w-3/4 mx-auto lg:mx-0 lg:w-2/4">
-          <form [formGroup]="contactForm" class="flex flex-col gap-6">
+          <form [formGroup]="contactForm" class="flex text-lato flex-col gap-6">
             <div class="personal-data flex flex-col sm:flex-row gap-6">
               <div class="flex flex-col w-full gap-2">
                 <label class="label-box" for="username">Nombre y Apellido</label>

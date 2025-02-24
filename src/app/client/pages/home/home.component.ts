@@ -3,6 +3,7 @@ import { HeaderComponent } from '../../components/header/header.component';
 import { CardTypeVehicleComponent } from "../../components/card-type-vehicle/card-type-vehicle.component";
 import { SearchBoxComponent } from "../../components/search-box/search-box.component";
 import { ContactComponent } from "../../components/contact/contact.component";
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,7 @@ import { ContactComponent } from "../../components/contact/contact.component";
     HeaderComponent,
     CardTypeVehicleComponent,
     SearchBoxComponent,
-    ContactComponent
+    ContactComponent,
 ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',

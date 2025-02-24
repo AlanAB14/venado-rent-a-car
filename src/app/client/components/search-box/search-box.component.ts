@@ -3,6 +3,7 @@ import { SelectModule } from 'primeng/select';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'search-box',
@@ -10,12 +11,13 @@ import { InputTextModule } from 'primeng/inputtext';
     SelectModule,
     FloatLabelModule,
     InputTextModule,
+    RouterModule,
     ReactiveFormsModule
   ],
   template: `
     <div class="search-box flex flex-col gap-6 sm:gap-0 sm:flex-row justify-between items-center">
       <div class="form-section flex w-full">
-        <form [formGroup]="searchForm" class="flex flex-col lg:flex-row justify-between gap-6 w-full sm:w-3/4">
+        <form [formGroup]="searchForm" class="flex text-lato flex-col lg:flex-row justify-between gap-6 w-full sm:w-3/4">
           <p-floatlabel variant="on" class="w-full">
             <p-select [options]="vehicleTypes()" id="type" formControlName="type" optionLabel="label" optionValue="value"  class="w-full" />
             <label for="type">Tipo</label>
@@ -38,7 +40,7 @@ import { InputTextModule } from 'primeng/inputtext';
         </form>
       </div>
       <div class="button-section">
-        <button class="button-rent hover:opacity-80">Buscar</button>
+        <button class="button-rent hover:opacity-80"><a routerLink="/flota">Buscar</a></button>
       </div>
     </div>
 

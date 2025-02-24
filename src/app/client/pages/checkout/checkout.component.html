@@ -1,0 +1,133 @@
+<div class="page-section container">
+  <div class="card flex justify-center">
+    <p-stepper [(value)]="activeStep" class="basis-[40rem]">
+        <p-step-list>
+            <p-step [value]="1" class="flex flex-row flex-auto gap-2">
+                <ng-template #content let-activateCallback="activateCallback" let-value="value">
+                    <button class="bg-transparent border-0 inline-flex flex-col gap-2" (click)="activateCallback()">
+                        <span
+                            class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center"
+                            [ngClass]="{
+                                'bg-primary text-primary-contrast border-primary': value <= activeStep,
+                                'border-surface': value > activeStep
+                            }"
+                        >
+                            <i class="pi pi-user"></i>
+                        </span>
+                    </button>
+                </ng-template>
+            </p-step>
+
+            <p-step [value]="2" class="flex flex-row flex-auto gap-2">
+                <ng-template #content let-activateCallback="activateCallback" let-value="value">
+                    <button class="bg-transparent border-0 inline-flex flex-col gap-2" (click)="activateCallback()">
+                        <span
+                            class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center"
+                            [ngClass]="{
+                                'bg-primary text-primary-contrast border-primary': value <= activeStep,
+                                'border-surface': value > activeStep
+                            }"
+                        >
+                            <i class="pi pi-calendar"></i>
+                        </span>
+                    </button>
+                </ng-template>
+            </p-step>
+
+            <p-step [value]="3" class="flex flex-row flex-auto gap-2">
+                <ng-template #content let-activateCallback="activateCallback" let-value="value">
+                    <button class="bg-transparent border-0 inline-flex flex-col gap-2" (click)="activateCallback()">
+                        <span
+                            class="rounded-full border-2 w-12 h-12 inline-flex items-center justify-center"
+                            [ngClass]="{
+                                'bg-primary text-primary-contrast border-primary': value <= activeStep,
+                                'border-surface': value > activeStep
+                            }"
+                        >
+                            <i class="pi pi-check-circle"></i>
+                        </span>
+                    </button>
+                </ng-template>
+            </p-step>
+        </p-step-list>
+
+        <p-step-panels>
+            <p-step-panel [value]="1">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <div class="flex flex-col gap-2 mx-auto" style="min-height: 16rem; max-width: 20rem">
+                      <div class="text-center text-lato mt-4 mb-4 text-xl font-semibold">Ingresá tus datos personales</div>
+                      <form [formGroup]="personalForm" class="flex flex-col gap-2">
+                          <div class="field text-lato">
+                            <input formControlName="name" pInputText id="input" type="text" placeholder="Nombre" fluid />
+                        </div>
+                        <div class="field text-lato">
+                          <input formControlName="email" pInputText id="email" type="email" placeholder="Email" fluid />
+                        </div>
+                        <div class="field text-lato">
+                          <input formControlName="phone" class="text-archivo" pInputText id="email" type="email" placeholder="Teléfono" fluid />
+                        </div>
+                      </form>
+                    </div>
+                    <div class="flex pt-6 justify-end">
+                        <p-button (onClick)="activateCallback(2)" label="Siguiente" icon="pi pi-arrow-right" [disabled]="!personalForm.valid" iconPos="right" />
+                    </div>
+                </ng-template>
+
+              </p-step-panel>
+
+            <p-step-panel [value]="2">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <div class="flex flex-col gap-2 mx-auto" style="min-height: 16rem; max-width: 24rem">
+                        <div class="text-center mt-4 mb-4 text-xl font-semibold">Ingresá fecha solicitada</div>
+                          <form [formGroup]="dateForm" class="flex flex-col gap-2">
+                            <div class="field text-lato">
+                              <p-datepicker formControlName="date_start" class="w-full" placeholder="Fecha de Inicio" />
+                            </div>
+                            <div class="field text-lato">
+                            <p-datepicker formControlName="date_end" [minDate]="dateForm.value.date_start" class="w-full" placeholder="Fecha de Devolución" />
+                          </div>
+                          <div class="field text-lato">
+                            <textarea rows="5" cols="30" pTextarea placeholder="Observaciones" formControlName="observation" fluid></textarea>
+                          </div>
+                        </form>
+                    </div>
+                    <div class="flex pt-6 justify-between">
+                        <p-button (onClick)="activateCallback(1)" label="Atras" severity="secondary" icon="pi pi-arrow-left" />
+                        <p-button (onClick)="activateCallback(3)" label="Siguiente" icon="pi pi-arrow-right" [disabled]="!dateForm.valid" iconPos="right" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
+
+            <p-step-panel [value]="3">
+                <ng-template #content let-activateCallback="activateCallback">
+                    <div class="flex flex-col gap-2 mx-auto" style="min-height: 16rem; max-width: 24rem">
+                        <div class="text-center mt-4 mb-4 text-xl font-semibold">Verifica los datos ingresados</div>
+                        <div class="flex flex-col w-full gap-4">
+                          <div class="car text-lato text-base"><strong>Vehículo:</strong> Toyota Etios Se</div>
+                          <div class="personales flex flex-col gap-1 p-4 border-2 rounded-lg">
+                            <div class="text-lato text-base font-bold">Datos Personales</div>
+                            @if (personalForm.value.name) { <div>Nombre: {{ personalForm.value.name }}</div> }
+                            @if (personalForm.value.email) { <div>Email: {{ personalForm.value.email }}</div> }
+                            @if (personalForm.value.phone) { <div>Teléfono: {{ personalForm.value.phone }}</div> }
+                          </div>
+                          <div class="fecha flex flex-col border-2 gap-1 p-4 rounded-lg">
+                            <div class="text-lato text-base font-bold">Fecha Solicitada</div>
+                            @if (dateForm.value.date_start) { <div>Fecha de Inicio: {{ dateForm.value.date_start | date }}</div> }
+                            @if (dateForm.value.date_end) { <div>Fecha de Devolución: {{ dateForm.value.date_end | date }}</div> }
+                            @if (dateForm.value.observation) { <div>Observaciones: {{ dateForm.value.observation }}</div> }
+                          </div>
+                          <div class="card">
+                            <p-message><i class="pi pi-info-circle"></i> Al confirmar la solicitud se comunicarán por teléfono con usted.</p-message>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="flex pt-6 justify-between">
+                        <p-button (onClick)="activateCallback(2)" label="Volver" severity="secondary" icon="pi pi-arrow-left" />
+                        <p-button (onClick)="confirmPurchease()" label="Confirmar" icon="pi pi-check" [loading]="loading" severity="success" iconPos="right" />
+                    </div>
+                </ng-template>
+            </p-step-panel>
+        </p-step-panels>
+    </p-stepper>
+</div>
+</div>
