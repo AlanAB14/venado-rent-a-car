@@ -2,8 +2,6 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { StepperModule } from 'primeng/stepper';
 import { InputTextModule } from 'primeng/inputtext';
-import { ToggleButton } from 'primeng/togglebutton';
-import { IconField } from 'primeng/iconfield';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DatePickerModule } from 'primeng/datepicker';
@@ -18,8 +16,6 @@ import { Router, RouterModule } from '@angular/router';
     StepperModule,
     ButtonModule,
     InputTextModule,
-    ToggleButton,
-    IconField,
     CommonModule,
     ReactiveFormsModule,
     DatePickerModule,

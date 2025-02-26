@@ -1,9 +1,13 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
 import { InMemoryScrollingFeature, InMemoryScrollingOptions, provideRouter, withInMemoryScrolling } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
 import { MyPreset } from '../myThemePrime';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpRequestInterceptor } from './interceptors/http-request.interceptor';
+import { JwtModule } from '@auth0/angular-jwt';
+import { environment } from '../environments/environment';
 
 
 
@@ -69,9 +73,26 @@ export const appConfig: ApplicationConfig = {
               firstDayOfWeek: 1
             },
             theme: {
-                preset: MyPreset,
+                preset: MyPreset, options: { darkModeSelector: '.app-dark' }
             }
         }),
-        provideRouter(routes, inMemoryScrollingFeature)
+        provideRouter(routes, inMemoryScrollingFeature),
+        {
+          provide: HTTP_INTERCEPTORS,
+          useClass: HttpRequestInterceptor,
+          multi: true
+        },
+        importProvidersFrom(
+
+          JwtModule.forRoot({
+            config: {
+              tokenGetter: () => {
+                return localStorage.getItem(`tkn_${environment.app}`)
+              },
+              // allowedDomains: ['localhost:4200'],
+            },
+          }),
+        ),
+        provideHttpClient(withInterceptorsFromDi()),
   ]
 };

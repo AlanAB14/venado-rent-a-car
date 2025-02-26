@@ -1,0 +1,31 @@
+@if (mostrarLoader) {
+    <section class="loading centered-element absolute left-0 top-0 w-screen bg-white flex justify-center items-center h-screen">
+        <p-progress-spinner ariaLabel="loading" />
+    </section>
+}
+
+@if (byPass) {
+    <section class="h-screen login flex justify-center items-center">
+        <div class="container py-5 h-100">
+            <div class="flex justify-center items-center">
+                <div class="w-4/5 sm:w-1/2 md:w-1/3">
+                    <div class="card bg-white shadow-md" style="border-radius: 1rem;">
+                        <div class="card-body flex flex-col items-center p-5 gap-6 text-center">
+
+                            <div class="bg-slate-400 w-fit h-fit p-2 rounded-sm">
+                              <h3 style="display: flex; justify-content: center;"><img src="./assets/images/logo-icon.png" alt=""></h3>
+                            </div>
+
+                            <div class="form-outline flex flex-col gap-3">
+                                <input (keyup.enter)="login()" [(ngModel)]="usuId" type="text" class="form-control outline-none border rounded-sm px-3 py-1 form-control-lg" placeholder="Usuario"/>
+                                <input (keyup.enter)="login()" [(ngModel)]="password" type="password" class="form-control outline-none border rounded-sm px-3 py-1 form-control-lg" placeholder="Contraseña"/>
+                            </div>
+
+                            <button (click)="login()" id="btnLogIn" class="text-white px-3 py-1 outline-none hover:shadow-md cursor-pointer rounded-md btn btn-primary btn-lg btn-block" [disabled]="(!usuId || !password) || (cargando)" type="submit">Login</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+}

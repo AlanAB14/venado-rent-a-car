@@ -1,0 +1,13 @@
+.login {
+    background-color: var(--green);
+}
+
+button {
+    background-color: var(--dark-green);
+}
+
+
+::ng-deep .p-progressspinner-circle {
+  stroke: var(--green)!important;
+}
+

@@ -1,0 +1,32 @@
+.side-nav {
+  min-height: 100vh;
+}
+
+.item-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+::ng-deep .mdc-list-item__primary-text{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+::ng-deep .mat-mdc-nav-list {
+  padding-top: 0!important;
+}
+
+::ng-deep mat-nav-list mat-icon {
+  color: grey!important;
+}
+
+::ng-deep mat-sidenav-content {
+  margin-top: 3rem;
+}
+
+.dvl-logo {
+  margin: 4rem auto 0 auto;
+}

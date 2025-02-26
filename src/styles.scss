@@ -1,8 +1,10 @@
+@use './assets/layout/layout.scss';
+@use 'primeicons/primeicons.css';
+@use './assets/demo/demo.scss';
+@import "primeicons/primeicons.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "primeicons/primeicons.css";
-
 @font-face {
   font-family: 'Archivo';
   src: url('./assets/fonts/Archivo/static/Archivo-Regular.ttf') format('truetype');
