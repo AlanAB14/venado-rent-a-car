@@ -1,0 +1,100 @@
+<div class="card flex justify-center">
+  @if (type() == 'edit') {
+  <form [formGroup]="userForm">
+    <p-dialog
+      header="Editar Perfil"
+      [closable]="false"
+      [modal]="true"
+      [visible]="dialogVisible()"
+      [style]="{ width: '25rem' }"
+    >
+      <span class="p-text-secondary block mb-8">Actualiza la información.</span>
+      <div class="flex items-center gap-4 mb-4">
+        <label for="username" class="font-semibold w-24">Usuario</label>
+        <input
+          pInputText
+          id="username"
+          class="flex-auto"
+          formControlName="username"
+          autocomplete="off"
+          [disabled]="true"
+        />
+      </div>
+
+      <div class="flex items-center gap-4 mb-4">
+        <label for="email" class="font-semibold w-24">Email</label>
+        <input
+          pInputText
+          id="email"
+          class="flex-auto"
+          formControlName="email"
+          autocomplete="off"
+        />
+      </div>
+
+      <div class="flex items-center gap-4 mb-4">
+        <label for="first_name" class="font-semibold w-24">Nombre</label>
+        <input
+          pInputText
+          id="first_name"
+          class="flex-auto"
+          formControlName="first_name"
+          autocomplete="off"
+        />
+      </div>
+      <div class="flex items-center gap-4 mb-4">
+        <label for="last_name" class="font-semibold w-24">Apellido</label>
+        <input
+          pInputText
+          id="last_name"
+          class="flex-auto"
+          formControlName="last_name"
+          autocomplete="off"
+        />
+      </div>
+      <div class="flex items-center gap-4 mb-4">
+        <label for="rol" class="font-semibold w-24">Rol</label>
+        <p-select
+          formControlName="role_id"
+          optionLabel="type"
+          optionValue="id"
+          [loading]="!roleResource.hasValue()"
+          [options]="roleResource.value()"
+          placeholder="Selecioná el rol"
+          class="flex-auto"
+        />
+      </div>
+      <div class="flex items-center gap-4 mb-4 flex justify-center">
+        @if (userForm.get('avatar')?.value) {
+          <img (click)="compressFile()" class="max-w-20 cursor-pointer" [src]="userForm.get('avatar')?.value" alt="">
+        }@else {
+          <span class="pi pi-user" style="font-size: 2.5rem;"></span>
+        }
+      </div>
+
+      @if (!changePasswordBtn) {
+        <div class="flex justify-center items-center gap-4 mb-4">
+          <p-button label="Cambiar contraseña" (onClick)="changePasswordBtn = !changePasswordBtn" />
+        </div>
+      }@else {
+        <div class="flex items-center gap-4 mb-4">
+          <label for="password" class="font-semibold w-24">Contraseña</label>
+          <p-password
+            id="password"
+            [feedback]="false"
+            class="flex-auto"
+            formControlName="password"
+            autocomplete="off"
+          />
+        </div>
+      }
+
+      <div class="flex justify-end gap-2">
+        <p-button label="Cancelar" (onClick)="closeDialog.emit(true)" severity="secondary" />
+        <p-button label="Guardar" [disabled]="userForm.pristine"  (onClick)="updateUser.emit(userForm.value)"/>
+      </div>
+    </p-dialog>
+  </form>
+
+  }
+</div>

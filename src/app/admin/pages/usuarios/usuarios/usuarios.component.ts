@@ -5,148 +5,49 @@ import { SelectModule } from 'primeng/select';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { FilterMatchMode } from 'primeng/api';
+import { FilterMatchMode, MessageService } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { UsuariosService } from '../../../service/usuarios.service';
 import { SkeletonModule } from 'primeng/skeleton';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
-
+import { User } from '../../../../core/User';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
+import { DialogModule } from 'primeng/dialog';
+import { AgregarEditarUsuarioComponent } from "../../../components/agregar-editar-usuario/agregar-editar-usuario.component";
+import { ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-usuarios',
-  imports: [TableModule, IconFieldModule, InputIconModule, SelectModule, TagModule, MultiSelectModule, InputTextModule, SkeletonModule],
+  imports: [TableModule, ReactiveFormsModule, DialogModule, TooltipModule, ButtonModule, ToastModule, IconFieldModule, InputIconModule, SelectModule, TagModule, MultiSelectModule, InputTextModule, SkeletonModule, AgregarEditarUsuarioComponent],
+  providers: [MessageService],
   templateUrl: './usuarios.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [`
+    ::ng-deep .p-dialog-header {
+      padding: 1.25rem 0 0 0!important;
+    }
+  `]
 })
 export default class UsuariosComponent {
   @ViewChild('dt2') dt2!: Table;
   filterMatchMode = FilterMatchMode.CONTAINS;
-  public urlImage = "http://localhost:3000"
-  customers!: any[];
-
-  representatives!: any[];
-
-  statuses!: any[];
-
-  usersResource = resource({
-    loader: async ({ request }) => {
-      return firstValueFrom(this.usersService.getUsuarios());
-    }
-  });
+  public urlImage = environment.api;
+  public users = signal<User[] | null>(null);
+  public userSelected = signal<User | null>(null);
+  public editarUsuarioDialog = signal<boolean>(false);
 
   private usersService = inject(UsuariosService);
+  private messageService = inject(MessageService);
 
   loading = signal<boolean>(false);
 
   activityValues: number[] = [0, 100];
 
-  userEfect = effect(() => {
-    console.log(this.usersResource.value())
-  })
 
   ngOnInit() {
-    this.loading.set(true);
-    this.customers = [
-      {
-        id: 1000,
-        name: 'James Butt',
-        country: {
-          name: 'Algeria',
-          code: 'dz',
-        },
-        company: 'Benton, John B Jr',
-        date: '2015-09-13',
-        status: 'unqualified',
-        verified: true,
-        activity: 17,
-        representative: {
-          name: 'Ioni Bowcher',
-          image: 'ionibowcher.png',
-        },
-        balance: 70663,
-      },
-      {
-        id: 1000,
-        name: 'James Butt',
-        country: {
-          name: 'Algeria',
-          code: 'dz',
-        },
-        company: 'Benton, John B Jr',
-        date: '2015-09-13',
-        status: 'unqualified',
-        verified: true,
-        activity: 17,
-        representative: {
-          name: 'Ioni Bowcher',
-          image: 'ionibowcher.png',
-        },
-        balance: 70663,
-      },
-      {
-        id: 1000,
-        name: 'James Butt',
-        country: {
-          name: 'Algeria',
-          code: 'dz',
-        },
-        company: 'Benton, John B Jr',
-        date: '2015-09-13',
-        status: 'unqualified',
-        verified: true,
-        activity: 17,
-        representative: {
-          name: 'Ioni Bowcher',
-          image: 'ionibowcher.png',
-        },
-        balance: 70663,
-      },
-      {
-        id: 1000,
-        name: 'James Butt',
-        country: {
-          name: 'Algeria',
-          code: 'dz',
-        },
-        company: 'Benton, John B Jr',
-        date: '2015-09-13',
-        status: 'unqualified',
-        verified: true,
-        activity: 17,
-        representative: {
-          name: 'Ioni Bowcher',
-          image: 'ionibowcher.png',
-        },
-        balance: 70663,
-      },
-    ];
-    this.loading.set(false);
-
-    this.customers.forEach(
-      (customer) => (customer.date = new Date(<Date>customer.date))
-    );
-
-    this.representatives = [
-      { name: 'Amy Elsner', image: 'amyelsner.png' },
-      { name: 'Anna Fali', image: 'annafali.png' },
-      { name: 'Asiya Javayant', image: 'asiyajavayant.png' },
-      { name: 'Bernardo Dominic', image: 'bernardodominic.png' },
-      { name: 'Elwin Sharvill', image: 'elwinsharvill.png' },
-      { name: 'Ioni Bowcher', image: 'ionibowcher.png' },
-      { name: 'Ivan Magalhaes', image: 'ivanmagalhaes.png' },
-      { name: 'Onyama Limba', image: 'onyamalimba.png' },
-      { name: 'Stephen Shaw', image: 'stephenshaw.png' },
-      { name: 'Xuxue Feng', image: 'xuxuefeng.png' },
-    ];
-
-    this.statuses = [
-      { label: 'Unqualified', value: 'unqualified' },
-      { label: 'Qualified', value: 'qualified' },
-      { label: 'New', value: 'new' },
-      { label: 'Negotiation', value: 'negotiation' },
-      { label: 'Renewal', value: 'renewal' },
-      { label: 'Proposal', value: 'proposal' },
-    ];
+    this.getUsers();
   }
 
   applyFilter(event: Event) {
@@ -158,6 +59,29 @@ export default class UsuariosComponent {
 
   clear(table: Table) {
     table.clear();
+  }
+
+  modalEmit(event: boolean) {
+    this.editarUsuarioDialog.set(event);
+  }
+
+  openUserModal(user: User) {
+    this.userSelected.set(user);
+    this.editarUsuarioDialog.set(true);
+  }
+
+  private getUsers() {
+    this.loading.set(true);
+    this.usersService.getUsuarios()
+      .subscribe(users => {
+        console.log(users)
+        this.users.set(users);
+        this.loading.set(false);
+      }, (error) => {
+        this.loading.set(false);
+        console.error(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al traer usuarios' });
+      })
   }
 
 }

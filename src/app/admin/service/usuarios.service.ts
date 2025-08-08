@@ -14,7 +14,11 @@ export class UsuariosService {
   constructor( private http: HttpClient ) { }
 
   getUsuarios(): Observable<User[]> {
-    return this.http.get<User[]>(`${ this._url }/users`).pipe(delay(3000));
+    return this.http.get<User[]>(`${ this._url }/users`);
+  }
+
+  updateUsuario(user: any, userId: number): Observable<User> {
+    return this.http.patch<User>(`${ this._url }/users/${ userId }`, {...user})
   }
 
 }
