@@ -6,4 +6,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './caracteristicas-vehiculo.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CaracteristicasVehiculoComponent { }
+export class CaracteristicasVehiculoComponent {
+  
+
+  private getMainFeatures() {
+    
+  }
+}
