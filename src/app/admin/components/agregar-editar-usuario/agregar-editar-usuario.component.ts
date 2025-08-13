@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnInit, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, inject, input, OnInit, output, signal, ViewChild } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
@@ -12,6 +12,17 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { environment } from '../../../../environments/environment';
 import { Dialog } from "primeng/dialog";
 import { UsuariosService } from '../../service/usuarios.service';
+export interface UsuarioModalResponse {
+  openModal: boolean;
+  message?: MessageDialog;
+  reload?: boolean;
+}
+
+export interface MessageDialog {
+  severity: string;
+  summary: string;
+  detail: string;
+}
 
 @Component({
   selector: 'agregar-editar-usuario',
@@ -22,7 +33,7 @@ import { UsuariosService } from '../../service/usuarios.service';
 })
 export class AgregarEditarUsuarioComponent implements OnInit{
   public user = input<User | null>();
-  readonly closeModal = output<boolean>();
+  readonly closeModal = output<UsuarioModalResponse>();
   public roles = signal<Role[]>([]);
   public loading = signal<boolean>(false);
   public userForm!: FormGroup;
@@ -34,15 +45,20 @@ export class AgregarEditarUsuarioComponent implements OnInit{
   private roleService = inject(RoleService);
   private userService = inject(UsuariosService);
   private messageService = inject(MessageService);
+  private initialUserFormValue!: any;
+
+   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   ngOnInit(): void {
     this.getRoles();
     this.initUserForm();
     this.initPasswordForm();
+
+    this.initialUserFormValue = this.userForm.getRawValue();
   }
 
-  close() {
-    this.closeModal.emit(false);
+  close(response: UsuarioModalResponse) {
+    this.closeModal.emit({openModal: response.openModal, message: response.message, reload: response.reload});
   }
 
   getRoles() {
@@ -63,6 +79,8 @@ export class AgregarEditarUsuarioComponent implements OnInit{
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
       this.userForm.patchValue({ avatar: file });
+      this.userForm.get('avatar')?.markAsDirty();
+      this.userForm.updateValueAndValidity();
 
       // vista previa
       const reader = new FileReader();
@@ -77,12 +95,11 @@ export class AgregarEditarUsuarioComponent implements OnInit{
     let user = {
       password: this.passwordForm.get('password')!.value
     }
-    this.updateUser(user, this.user()?.id!)
+    this.sendData(user, this.user()?.id)
   }
 
   updateUserDialog() {
-    this.updateUser(this.userForm.value, this.user()?.id!)
-    this.closeModal.emit(true);
+    this.sendData(this.userForm.value, this.user()?.id)
   }
 
   private initUserForm() {
@@ -112,42 +129,56 @@ export class AgregarEditarUsuarioComponent implements OnInit{
     });
   }
 
-  private updateUser(user: any, userId: number) {
+  private sendData(user: any, userId?: number) {
     const formData = new FormData();
-    if (user.username) {
-      formData.append('username', user.username);
-    }
-    if (user.first_name) {
-      formData.append('first_name', user.first_name);
-    }
-    if (user.last_name) {
-      formData.append('last_name', user.first_name);
-    }
-    if (user.email) {
-      formData.append('email', user.email);
-    }
-    if (user.avatar) {
-      formData.append('avatar', user.avatar);
-    }
-    if (user.password) {
-      formData.append('password', user.password);
-    }
-    if (user.role) {
-      formData.append('role_id', user.role.id.toString());
+    if (user.username) formData.append('username', user.username);
+    if (user.first_name) formData.append('first_name', user.first_name);
+    if (user.last_name) formData.append('last_name', user.last_name);
+    if (user.email) formData.append('email', user.email);
+    if (user.avatar instanceof File) formData.append('avatar', user.avatar);
+    if (user.password) formData.append('password', user.password);
+
+    if (user.role_id !== undefined && user.role_id !== null) {
+      formData.append('role_id', String(user.role_id));
     }
 
     this.changePasswordDialog.set(false);
     this.loading.set(true);
+    if (userId) {
+      this.updateUser(formData, userId);
+    }else {
+      this.addUser(formData)
+    }
+  }
+
+  private updateUser(formData: any, userId: number) {
     this.userService.updateUsuario(formData, userId)
       .subscribe(resp => {
         this.passwordForm.reset();
         this.loading.set(false);
-        this.messageService.add({ severity: 'success', summary: 'Actializado', detail: 'Usuario actualizado con éxito.' });
+        this.close({openModal: false, message: { severity: 'success', summary: 'Actializado', detail: 'Usuario actualizado con éxito.' }, reload: true});
       }, (error) => {
         console.error(error);
         this.passwordForm.reset();
         this.loading.set(false);
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al actualizar usuario.' });
+        this.close({openModal: false, message: { severity: 'error', summary: 'Error', detail: error.status === 400 ? error.error.message : 'Error al actualizar usuario.' }})
       })
   }
+
+   private addUser(user: any) {
+    this.userService.addUser(user)
+      .subscribe(users => {
+        this.loading.set(false);
+        this.messageService.add({ severity: 'success', summary: 'Agregado', detail: 'Usuario agregado con éxito.' });
+        this.userForm.reset();
+        this.avatarPreview.set(null);
+      }, (error) => {
+        this.loading.set(false);
+        console.error(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al agregar usuario.' });
+        this.userForm.reset();
+        this.avatarPreview.set(null);
+      })
+  }
+
 }

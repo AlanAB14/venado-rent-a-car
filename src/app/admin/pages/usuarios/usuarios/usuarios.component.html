@@ -67,7 +67,7 @@
               <td>
                 <div class="flex items-center gap-2">
                   <p-button size="small" icon="pi pi-user-edit" pTooltip="Editar usuario" tooltipPosition="top" [rounded]="true" severity="info" (onClick)="openUserModal(user)" />
-                  <p-button size="small" icon="pi pi-user-minus" pTooltip="Eliminar usuario" tooltipPosition="top" [rounded]="true" severity="danger" />
+                  <p-button size="small" icon="pi pi-user-minus" pTooltip="Eliminar usuario" tooltipPosition="top" [rounded]="true" severity="danger" (onClick)="openUserDeleteModal(user)" />
                 </div>
               </td>
           </tr>
@@ -88,6 +88,7 @@
   }
 </p-dialog>
 
+<p-confirmdialog />
 
 <p-toast />
 

@@ -13,12 +13,20 @@ export class UsuariosService {
 
   constructor( private http: HttpClient ) { }
 
+  addUser(user: User) {
+    return this.http.post(`${this._url}/users`, user)
+  }
+
   getUsuarios(): Observable<User[]> {
     return this.http.get<User[]>(`${ this._url }/users`);
   }
 
   updateUsuario(user: any, userId: number): Observable<User> {
-    return this.http.patch<User>(`${ this._url }/users/${ userId }`, {...user})
+    return this.http.patch<User>(`${ this._url }/users/${ userId }`, user)
+  }
+
+  deleteUsuario(userId: number) {
+    return this.http.delete(`${this._url}/users/${ userId }`)
   }
 
 }

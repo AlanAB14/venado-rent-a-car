@@ -59,6 +59,18 @@ export const routes: Routes = [
         path: 'agregar-usuario',
         loadComponent: () => import('./admin/pages/usuarios/agregar-usuario/agregar-usuario.component')
       },
+      {
+        path: 'agregar-vehiculo',
+        loadComponent: () => import('./admin/pages/vehiculos/agregar-vehiculo/agregar-vehiculo.component')
+      },
+      {
+        path: 'editar-vehiculo',
+        loadComponent: () => import('./admin/pages/vehiculos/editar-vehiculo/editar-vehiculo.component')
+      },
+      {
+        path: 'eliminar-vehiculo',
+        loadComponent: () => import('./admin/pages/vehiculos/eliminar-vehiculo/eliminar-vehiculo.component')
+      }
     ]
   }
 ];

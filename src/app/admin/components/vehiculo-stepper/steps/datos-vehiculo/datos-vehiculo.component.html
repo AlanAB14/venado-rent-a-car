@@ -1,0 +1,28 @@
+<div>
+  <form class="flex flex-col items-center justify-center gap-3" [formGroup]="datosForm()!">
+    <div class="flex flex-col sm:flex-row w-full gap-3">
+      <p-float-label variant="in" class="w-full">
+        <input id="name" pInputText formControlName="name" class="w-full h-full" />
+        <label for="name">Nombre</label>
+      </p-float-label>
+      <p-float-label variant="in" class="w-full">
+        <p-multiselect [options]="vehicleTypes()!" [showHeader]="false" inputId="vehicle_type" formControlName="vehicle_type" optionLabel="type" optionValue="id" [maxSelectedLabels]="2" styleClass="w-full uppercase" class="uppercase" />
+        <label for="vehicle_type">Tipo</label>
+      </p-float-label>
+    </div>
+    <div class="flex flex-col sm:flex-row w-full gap-3">
+      <p-float-label variant="in" class="w-full">
+          <p-inputnumber formControlName="price_per_day" class="w-full" inputId="price_per_day" mode="currency" currency="ARS" />
+        <label for="price_per_day">Precio por día</label>
+      </p-float-label>
+      <p-float-label variant="in" class="w-full">
+        <p-select [options]="availabilityTypes" class="w-full" formControlName="availability" optionLabel="text" optionValue="id" />
+        <label for="availability">Disponibilidad</label>
+      </p-float-label>
+    </div>
+    <p-floatlabel variant="in" class="w-full">
+      <textarea pTextarea id="description" class="w-full" formControlName="description" rows="5" style="resize: none"></textarea>
+      <label for="description">Descripción</label>
+    </p-floatlabel>
+  </form>
+</div>

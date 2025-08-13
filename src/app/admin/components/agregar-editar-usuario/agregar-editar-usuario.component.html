@@ -34,7 +34,7 @@
             <input class="w-full" pInputText formControlName="email" id="email" autocomplete="off" />
           </p-float-label>
             <div class="flex flex-col gap-1 w-full">
-              <label class="font-bold">Avatar</label>
+              <label class="font-bold cursor-pointer" (click)="fileInput.click()">Avatar</label>
               <img class="flex cursor-pointer self-center w-24 h-auto" [src]="avatarPreview()" alt="" (click)="fileInput.click()">
               <input
                 #fileInput
@@ -46,8 +46,8 @@
             </div>
         </form>
       <div class="flex justify-end gap-2">
-        <p-button label="Cancel" severity="secondary" (click)="close()" />
-        <p-button label="Guardar" [disabled]="userForm.invalid" (click)="updateUserDialog()" />
+        <p-button label="Cancel" severity="secondary" (click)="close({openModal: false})" />
+        <p-button label="Guardar" [disabled]="userForm.invalid || userForm.pristine" (click)="updateUserDialog()" />
       </div>
     </div>
   }
