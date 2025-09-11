@@ -7,10 +7,11 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { Editor } from 'primeng/editor';
 
 @Component({
   selector: 'datos-vehiculo',
-  imports: [FloatLabelModule, InputNumberModule, MultiSelectModule, InputTextModule, TextareaModule, SelectModule, ReactiveFormsModule],
+  imports: [FloatLabelModule, InputNumberModule, MultiSelectModule, InputTextModule, TextareaModule, SelectModule, ReactiveFormsModule, Editor],
   templateUrl: './datos-vehiculo.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

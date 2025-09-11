@@ -21,8 +21,7 @@
       </p-float-label>
     </div>
     <p-floatlabel variant="in" class="w-full">
-      <textarea pTextarea id="description" class="w-full" formControlName="description" rows="5" style="resize: none"></textarea>
-      <label for="description">Descripción</label>
+      <p-editor formControlName="description" placeholder="Descripción" class="w-full" id="description" [style]="{ height: '320px' }" />
     </p-floatlabel>
   </form>
 </div>

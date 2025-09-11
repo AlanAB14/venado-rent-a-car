@@ -1,7 +1,14 @@
-<app-navbar />
+  <app-navbar />
 
-<div class="client-content">
-  <router-outlet />
-</div>
+  <div class="client-content">
+    <router-outlet />
+  </div>
 
-<app-footer />
+  <app-footer />
+
+  @if (loading()) {
+    <div class=" flex justify-center items-center fixed top-0 left-0 w-full min-h-screen bg-black opacity-60 z-[10000]">
+      <i class="pi pi-spin pi-spinner" style="font-size: 6rem; color: #5E9424"></i>
+    </div>
+  }
+

@@ -1,1 +1,86 @@
-<p>eliminar-vehiculo works!</p>,
+<div class="container">
+    <div class="card">
+      <p-table
+       #dt2
+       [value]="vehicles()!"
+       selectionMode="single"
+       [loading]="loading()"
+       (onRowSelect)="onRowSelect($event)"
+       [showLoader]="false"
+       dataKey="id"
+       [rows]="10"
+       [rowsPerPageOptions]="[10, 25, 50]"
+       [paginator]="true"
+       [globalFilterFields]="['name', 'description', 'price_per_day']"
+       [tableStyle]="{ 'min-width': '50rem' }"
+   >
+       <ng-template #caption>
+           <div class="flex">
+               <p-iconfield iconPosition="left" class="ml-auto">
+                   <p-inputicon>
+                       <i class="pi pi-search"></i>
+                   </p-inputicon>
+                   <input
+                       pInputText
+                       type="text"
+                       (input)="applyFilter($event)"
+                       placeholder="Buscar vehículo"
+                   />
+               </p-iconfield>
+           </div>
+       </ng-template>
+
+       <ng-template #header>
+           <tr>
+               <th style="width:30%">Nombre</th>
+               <th style="width:30%">Descripcion</th>
+               <th style="width:30%">Imágenes</th>
+               <th style="width:10%">Últ. edición</th>
+           </tr>
+       </ng-template>
+         <ng-template #loadingbody let-columns="columns">
+           @for (item of [1,2,3,4,5]; track $index) {
+                <tr>
+                  <td><p-skeleton /></td>
+                  <td><p-skeleton /></td>
+                  <td><p-skeleton /></td>
+                  <td><p-skeleton /></td>
+                </tr>
+              }
+         </ng-template>
+         <ng-template #body let-vehicle>
+            <tr [pSelectableRow]="vehicle">
+                <td>
+                    {{ vehicle.name  }}
+                </td>
+                <td>
+                    <div class="flex items-center gap-2">
+                      <div [innerHTML]="vehicle.description"></div>
+                    </div>
+                </td>
+                <td>
+                    <div class="flex items-center gap-2">
+                      @if (vehicle.images && vehicle.images !== null) {
+                        @for (image of vehicle.images; track $index) {
+                          <img alt="user-vehicle" [src]="urlImage + image" width="32" style="vertical-align: middle" />
+                        }
+                      }
+                    </div>
+                </td>
+                <td>
+                    {{ vehicle.updated_by.username ?? '' }}
+                </td>
+            </tr>
+         </ng-template>
+         <ng-template #emptymessage>
+             <tr>
+                 <td colspan="5">No se encontraron vehículos.</td>
+             </tr>
+         </ng-template>
+   </p-table>
+   </div>
+
+  </div>
+
+<p-toast />
+<p-confirmdialog />

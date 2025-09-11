@@ -1,24 +1,35 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TextareaModule } from 'primeng/textarea';
 import { InputTextModule } from 'primeng/inputtext';
+import { CommonModule } from '@angular/common';
+import { LoadingService } from '../../../admin/service/loading.service';
+import { ContactService } from '../../../admin/service/contact.service';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { OnlyNumbersDirective } from "../../../core/directives/onlynumbers.directive";
 
 @Component({
   selector: 'contact',
-  imports: [ReactiveFormsModule, TextareaModule, InputTextModule],
+  imports: [ReactiveFormsModule, ToastModule, ConfirmDialogModule, TextareaModule, InputTextModule, CommonModule, OnlyNumbersDirective],
   template: `
     <div class="contact-box w-full">
       <div class="contact-box__content flex flex-col lg:flex-row justify-around xl:justify-between gap-16">
         <div class="contact-box__content__form w-full sm:w-3/4 mx-auto lg:mx-0 lg:w-2/4">
           <form [formGroup]="contactForm" class="flex text-lato flex-col gap-6">
-            <div class="personal-data flex flex-col sm:flex-row gap-6">
-              <div class="flex flex-col w-full gap-2">
+            <div class="personal-data grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div class="flex flex-col basis-full gap-2">
                 <label class="label-box" for="username">Nombre y Apellido</label>
-                <input pInputText id="username" aria-describedby="username-help" formControlName="name" />
+                <input pInputText id="username" class="w-full" aria-describedby="username-help" formControlName="name" />
               </div>
-              <div class="flex flex-col w-full gap-2">
+              <div class="flex flex-col basis-full gap-2">
+                <label class="label-box" for="telefono">Teléfono</label>
+                <input onlyNumbers pInputText id="telefono" class="w-full" aria-describedby="username-help" formControlName="phone" />
+              </div>
+              <div class="flex flex-col basis-full gap-2">
                 <label class="label-box" for="email">Email</label>
-                <input pInputText id="email" aria-describedby="username-help" formControlName="email" />
+                <input pInputText id="email" class="w-full" aria-describedby="username-help" formControlName="email" />
               </div>
             </div>
             <div class="message flex flex-col gap-2 w-full">
@@ -26,7 +37,7 @@ import { InputTextModule } from 'primeng/inputtext';
               <textarea rows="5" id="message" cols="30" pTextarea formControlName="message"></textarea>
             </div>
             <div class="button-section mx-auto sm:mx-0">
-              <button class="button-rent hover:opacity-80">Enviar</button>
+              <button class="button-rent hover:opacity-80" [ngClass]="{'opacity-40 hover:opacity-40': !contactForm.valid}" (click)="sendFormContact()" [disabled]="!contactForm.valid">Enviar</button>
             </div>
           </form>
         </div>
@@ -62,8 +73,10 @@ import { InputTextModule } from 'primeng/inputtext';
       </div>
     </div>
 
+    <p-toast />
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [MessageService],
   styles: [`
 
     .contact-box {
@@ -110,6 +123,9 @@ import { InputTextModule } from 'primeng/inputtext';
 })
 export class ContactComponent {
   public contactForm!: FormGroup;
+  private loadingSvc = inject(LoadingService);
+  private contactService = inject(ContactService);
+  private messageService = inject(MessageService);
 
   constructor() {
     this.initForm();
@@ -118,8 +134,24 @@ export class ContactComponent {
   initForm() {
     this.contactForm = new FormGroup({
       name: new FormControl('', Validators.required),
+      phone: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       message: new FormControl('', Validators.required),
     });
+  }
+
+  sendFormContact() {
+    this.loadingSvc.show();
+    this.contactService.postContactForm(this.contactForm.value)
+      .subscribe(contact => {
+        this.loadingSvc.hide();
+        this.messageService.add({ severity: 'success', summary: 'Enviado', detail: 'Formulario enviado con éxito' });
+        this.contactForm.reset();
+      }, (error) => {
+        console.error(error);
+        this.loadingSvc.hide();
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al enviar formulario.' });
+        this.contactForm.reset();
+      })
   }
 }

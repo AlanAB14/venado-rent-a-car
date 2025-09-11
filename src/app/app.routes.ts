@@ -70,6 +70,14 @@ export const routes: Routes = [
       {
         path: 'eliminar-vehiculo',
         loadComponent: () => import('./admin/pages/vehiculos/eliminar-vehiculo/eliminar-vehiculo.component')
+      },
+      {
+        path: 'contacto',
+        loadComponent: () => import('./admin/pages/contacto/contacto.component')
+      },
+      {
+        path: 'reserva',
+        loadComponent: () => import('./admin/pages/reserva/reserva.component')
       }
     ]
   }

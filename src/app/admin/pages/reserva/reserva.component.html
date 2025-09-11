@@ -1,0 +1,111 @@
+  <div class="container">
+    <div class="card">
+      <p-table
+       #dt2
+       [value]="reservasForm()!"
+       selectionMode="single"
+       [loading]="loading()"
+       (onRowSelect)="onRowSelect($event)"
+       [selection]="reservaSelected()"
+       [showLoader]="false"
+       dataKey="id"
+       [rows]="10"
+       [rowsPerPageOptions]="[10, 25, 50]"
+       [paginator]="true"
+       [globalFilterFields]="['name', 'email', 'phone', 'car_name']"
+       [tableStyle]="{ 'min-width': '50rem' }"
+   >
+       <ng-template #caption>
+           <div class="flex">
+               <p-iconfield iconPosition="left" class="ml-auto">
+                   <p-inputicon>
+                       <i class="pi pi-search"></i>
+                   </p-inputicon>
+                   <input
+                       pInputText
+                       type="text"
+                       (input)="applyFilter($event)"
+                       placeholder="Buscar reserva"
+                   />
+               </p-iconfield>
+           </div>
+       </ng-template>
+
+       <ng-template #header>
+           <tr>
+               <th style="width:30%">Nombre</th>
+               <th style="width:30%">Email</th>
+               <th style="width:30%">Teléfono</th>
+               <th style="width:10%">Vehículo</th>
+           </tr>
+       </ng-template>
+         <ng-template #loadingbody let-columns="columns">
+           @for (item of [1,2,3,4,5]; track $index) {
+                <tr>
+                  <td><p-skeleton /></td>
+                  <td><p-skeleton /></td>
+                  <td><p-skeleton /></td>
+                  <td><p-skeleton /></td>
+                </tr>
+              }
+         </ng-template>
+         <ng-template #body let-contact>
+            @if (!loading()) {
+              <tr [pSelectableRow]="contact">
+                  <td>
+                      {{ contact.name  }}
+                  </td>
+                  <td>
+                      {{ contact.email }}
+                  </td>
+                  <td>
+                      {{ contact.phone }}
+                  </td>
+                  <td>
+                      {{ contact.car_name }}
+                  </td>
+              </tr>
+            }
+         </ng-template>
+         <ng-template #emptymessage>
+             <tr>
+                 <td colspan="5">No se encontraron formularios de reserva.</td>
+             </tr>
+         </ng-template>
+   </p-table>
+   </div>
+
+  </div>
+
+<p-toast />
+<p-dialog [modal]="true" [closable]="false" [visible]="reservaSelected() ? true : false" [style]="{ width: '25rem' }">
+    <div class="flex items-center gap-4 mb-8">
+        <label for="username" class="font-semibold w-24">Nombre</label>
+        <p>{{ reservaSelected()?.name }}</p>
+      </div>
+      <div class="flex items-center gap-4 mb-8">
+        <label for="email" class="font-semibold w-24">Email</label>
+        <p>{{ reservaSelected()?.email }}</p>
+      </div>
+      <div class="flex items-center gap-4 mb-8">
+        <label for="email" class="font-semibold w-24">Teléfono</label>
+        <p>{{ reservaSelected()?.phone }}</p>
+      </div>
+      <div class="flex items-center gap-4 mb-8">
+        <label for="email" class="font-semibold w-24">Vehículo</label>
+        <p>{{ reservaSelected()?.car_name }}</p>
+      </div>
+      <div class="flex items-center gap-4 mb-8">
+        <label for="email" class="font-semibold w-24">Fecha solicitada</label>
+        <p>Desde {{ reservaSelected()?.date_start | date:'dd/MM/yyyy HH:mm' }} - Hasta {{ reservaSelected()?.date_end | date:'dd/MM/yyyy HH:mm' }}</p>
+      </div>
+      <div class="flex items-center gap-4 mb-8">
+        <label for="email" class="font-semibold w-24">Precio</label>
+        <p>{{ reservaSelected()?.total_price | currency:'ARS':'symbol':'1.2-2':'es-AR' }}</p>
+      </div>
+    <div class="flex justify-end gap-2">
+        <p-button label="Cerrar" (onClick)="reservaSelected.set(null)" severity="secondary"  />
+        <p-button label="Borrar " severity="danger" (onClick)="eliminarContact($event)" />
+    </div>
+</p-dialog>
+<p-confirmpopup />

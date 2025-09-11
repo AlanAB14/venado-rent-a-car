@@ -108,6 +108,11 @@
 .navbar-responsive {
     background-color: var(--green);
     display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
 
 
     @media (max-width: 768px) {

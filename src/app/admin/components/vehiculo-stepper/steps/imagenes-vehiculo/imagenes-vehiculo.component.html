@@ -1,0 +1,26 @@
+<div>
+  <div [formGroup]="imagenesForm()!"></div>
+
+  <!-- BLOQUE: Subida de nuevas imágenes -->
+  <p-fileupload
+    name="images"
+    mode="advanced"
+    [files]="uploadedFiles()"
+    chooseLabel="Subir imagen"
+    uploadLabel="Guardar"
+    cancelLabel="Cancelar"
+    [multiple]="true"
+    accept="image/*"
+    [showUploadButton]="false"
+    [customUpload]="true"
+    (onSelect)="onSelect($event)"
+    (onRemove)="onRemove($event)"
+    (onClear)="onClear()">
+
+    <ng-template #empty>
+      <div>Arrastra imágenes para subirlas.</div>
+    </ng-template>
+
+  </p-fileupload>
+
+</div>

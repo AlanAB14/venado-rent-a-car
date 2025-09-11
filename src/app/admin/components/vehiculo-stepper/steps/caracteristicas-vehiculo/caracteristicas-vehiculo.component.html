@@ -1,1 +1,145 @@
-<p>caracteristicas-vehiculo works!</p>,
+<div>
+  <form class="flex flex-col items-center justify-center gap-3" [formGroup]="caracteristicasForm()!">
+    <div class="flex items-center flex-col sm:flex-row w-full gap-3">
+      <p-float-label variant="in" class="w-full">
+        <p-select [options]="mainFeatures()!" inputId="main_features" formControlName="main_features" optionValue="id" styleClass="w-full" placeholder="Seleccioná las características principales" [loading]="loading()">
+          <ng-template pTemplate="selectedItem" let-optionSelected>
+            <div class="flex gap-6">
+              <div class="flex items-center items-center gap-1">
+                  <img src="assets/images/car-features/cinturon-de-seguridad.png" style="width: 18px"/>
+                  <div>{{ optionSelected.persons }}</div>
+              </div>
+              <div class="flex items-center items-center gap-1">
+                  <img src="assets/images/car-features/puerta-del-auto.png" style="width: 18px"/>
+                  <div>{{ optionSelected.doors }}</div>
+              </div>
+              <div class="flex items-center items-center gap-1">
+                  <img src="assets/images/car-features/valija.png" style="width: 18px"/>
+                  <div>{{ optionSelected.luggage }}</div>
+              </div>
+              <div class="flex items-center items-center gap-1">
+                  <img src="assets/images/car-features/copo-de-nieve.png" style="width: 18px"/>
+                  <div>{{ optionSelected.air_conditioning ? 'Sí' : 'No' }}</div>
+              </div>
+              <div class="flex items-center items-center gap-1">
+                  <img src="assets/images/car-features/transmision-automatica.png" style="width: 18px"/>
+                  <div>{{ optionSelected.gearbox === 'automatic' ? 'Automática' : 'Manual' }}</div>
+              </div>
+            </div>
+          </ng-template>
+
+          <ng-template let-feature pTemplate="item">
+              <div class="flex gap-6">
+              <div class="flex items-center items-center gap-1">
+                  <img src="assets/images/car-features/cinturon-de-seguridad.png" style="width: 18px"/>
+                  <div>{{ feature.persons }}</div>
+              </div>
+              <div class="flex items-center items-center gap-1">
+                  <img src="assets/images/car-features/puerta-del-auto.png" style="width: 18px"/>
+                  <div>{{ feature.doors }}</div>
+              </div>
+              <div class="flex items-center items-center gap-1">
+                  <img src="assets/images/car-features/valija.png" style="width: 18px"/>
+                  <div>{{ feature.luggage }}</div>
+              </div>
+              <div class="flex items-center items-center gap-1">
+                  <img src="assets/images/car-features/copo-de-nieve.png" style="width: 18px"/>
+                  <div>{{ feature.air_conditioning ? 'Sí' : 'No' }}</div>
+              </div>
+              <div class="flex items-center items-center gap-1">
+                  <img src="assets/images/car-features/transmision-automatica.png" style="width: 18px"/>
+                  <div>{{ feature.gearbox === 'automatic' ? 'Automática' : 'Manual' }}</div>
+              </div>
+            </div>
+          </ng-template>
+          </p-select>
+        <label for="main_features">Características Principales</label>
+      </p-float-label>
+      <p-button [rounded]="true" pTooltip="Agregar nueva combinación" tooltipPosition="top" icon="pi pi-plus" (onClick)="mainFeaturesDialog.set(true)" />
+    </div>
+  </form>
+
+  <div class="flex flex-col gap-3 mt-4">
+    <div class="text-lg font-bold uppercase">Otras características</div>
+    <p-button label="Agregar otra característica" (onClick)="otherFeatureDialog.set(true)" />
+    <div class="text-sm italic">Seleccione las caracteristicas</div>
+    <div class="flex flex-wrap gap-2">
+      @if (otherFeatures()) {
+        @for (item of otherFeatures(); track $index) {
+          <div class="flex items-center gap-4 border rounded-md p-3 w-fit cursor-pointer"
+               [ngClass]="{'ring-1 ring-blue-500 border-blue-500 shadow-sm': isSelected(item.id)}"
+               (click)="toggleOtherFeature(item.id)">
+            <img [src]="urlImage + item.icon"
+                 class="w-6 h-fit">
+                 <div class="flex flex-col gap-1">
+                  <div class="text-sm text-archivo text-[#6F6D71]">{{ item.title }}</div>
+                  <div class="text-sm text-archivo">{{ item.description }}</div>
+                </div>
+          </div>
+        }
+      }
+    </div>
+  </div>
+</div>
+
+
+<p-dialog [modal]="true" header="Agregar otra característica" [showHeader]="false" [closable]="false" [visible]="otherFeatureDialog()" [style]="{ width: '25rem' }">
+  <form [formGroup]="otherFeaturesForm" class="flex flex-col gap-4 mb-8">
+    <div class="flex items-center gap-2 w-full">
+       <p-floatlabel variant="in" class="w-full">
+          <input pInputText class="w-full" id="title" formControlName="title" autocomplete="off" />
+          <label for="title">Título</label>
+      </p-floatlabel>
+    </div>
+    <div class="flex items-center gap-2 w-full">
+      <p-floatlabel variant="in" class="w-full">
+          <input pInputText class="w-full" id="description" formControlName="description" autocomplete="off" />
+          <label for="title">Descripción</label>
+      </p-floatlabel>
+    </div>
+    <div class="flex flex-col gap-1 w-full">
+    <label class="font-bold cursor-pointer" (click)="fileInput.click()">Icono</label>
+    <img class="flex cursor-pointer self-center w-24 h-auto" [src]="iconPreview()" alt="" (click)="fileInput.click()">
+    <input
+      #fileInput
+      type="file"
+      accept="image/*"
+      style="display: none"
+      (change)="onIconChange($event)"
+    />
+    </div>
+  </form>
+  <div class="flex justify-end gap-2">
+      <p-button label="Cancelar" severity="secondary" (click)="otherFeatureDialog.set(false); otherFeaturesForm.reset()" />
+      <p-button label="Guardar" [disabled]="otherFeaturesForm.invalid" (click)="sendOtherFeature()" />
+  </div>
+</p-dialog>
+
+<p-dialog [modal]="true" header="Agregar nueva combinación" [showHeader]="false" [closable]="false" [visible]="mainFeaturesDialog()" [style]="{ width: '25rem' }">
+  <form [formGroup]="mainFeaturesForm" class="grid grid-cols-2 gap-4 mb-8">
+    <div class="flex items-center gap-2 w-full">
+        <img src="assets/images/car-features/cinturon-de-seguridad.png" style="width: 18px"/>
+        <p-inputnumber [showButtons]="true" formControlName="persons" min="1"  class="w-full"/>
+    </div>
+    <div class="flex items-center gap-2 w-full">
+        <img src="assets/images/car-features/puerta-del-auto.png" style="width: 18px"/>
+        <p-inputnumber [showButtons]="true" formControlName="doors" min="1"  class="w-full"/>
+    </div>
+    <div class="flex items-center gap-2 w-full">
+        <img src="assets/images/car-features/valija.png" style="width: 18px"/>
+        <p-inputnumber [showButtons]="true" formControlName="luggage" min="1"  class="w-full"/>
+    </div>
+    <div class="flex items-center gap-2 w-full">
+        <img src="assets/images/car-features/copo-de-nieve.png" style="width: 18px"/>
+        <p-select [options]="airOptions" formControlName="air_conditioning" optionLabel="label" optionValue="value" class="w-full"/>
+      </div>
+      <div class="flex items-center gap-2 w-full">
+        <img src="assets/images/car-features/transmision-automatica.png" style="width: 18px"/>
+        <p-select [options]="gearBoxOptions" formControlName="gearbox" optionLabel="label" optionValue="value" class="w-full"/>
+    </div>
+  </form>
+  <div class="flex justify-end gap-2">
+      <p-button label="Cancelar" severity="secondary" (click)="mainFeaturesDialog.set(false); mainFeaturesForm.reset()" />
+      <p-button label="Guardar" [disabled]="mainFeaturesForm.invalid" (click)="sendMainFeature()" />
+  </div>
+</p-dialog>
