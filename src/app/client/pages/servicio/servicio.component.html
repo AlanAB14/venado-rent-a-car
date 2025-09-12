@@ -1,119 +1,87 @@
-<div class="page-section">
-  <div class="vehicle-data container flex flex-col">
-    <div class="flex items-center gap-4">
-      <img class="w-5" src="assets/images/title-item-orange.png" alt="title">
-      <div class="upper-title text-xl text-[#F90]">Particular</div>
-    </div>
-
-    <div class="vehicle-name text-5xl my-4 text-archivo text-[#F90]">Toyota <strong>Etios Se</strong></div>
-
-    <div class="vehicle-image flex justify-center">
-      <div class="card">
-        <p-galleria [value]="images()" [showThumbnailNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }" [numVisible]="3">
-            <ng-template #item let-item>
-                <img [src]="item.itemImageSrc" style="width: 100%; display: block;"/>
-            </ng-template>
-            <ng-template #thumbnail let-item>
-                <img [src]="item.thumbnailImageSrc" style="width: 30%; display: block;" />
-            </ng-template>
-        </p-galleria>
+@if (vehicle()) {
+  <div class="page-section">
+    <div class="vehicle-data container flex flex-col">
+      <div class="flex items-center gap-4">
+        <img class="w-5" src="assets/images/title-item-orange.png" alt="title">
+        <div class="upper-title text-xl text-[#F90]">{{ vehicleTypeLabel }}</div>
       </div>
-    </div>
 
-    <div class="vehicle-description mt-14 flex flex-col sm:flex-row justify-center gap-6">
-      <div class="flex flex-col gap-2 w-2/5">
-        <div class="text-archivo text-[#F90] font-bold text-xl">Confort & Tecnología</div>
-        <div class="text-archivo text-[#6F6D71] text-base">Audio con pantalla táctil de 7” y conectividad: Apple CarPlay® y Android Auto® Disponible en versiones XLS Pack. Disponible sólo por conexión USB.</div>
-      </div>
-      <div class="flex flex-col gap-2 w-2/5">
-        <div class="text-archivo text-[#F90] font-bold text-xl">Seguridad</div>
-        <div class="text-archivo text-[#6F6D71] text-base">Sistema de anclaje ISOFIX x2 en asientos traseros. Airbag conductor y acompañante. Control de estabilidad (VSC), Control de Tracción (TRC) y </div>
-      </div>
-    </div>
+      <div class="vehicle-name text-5xl my-4 text-archivo text-[#F90]"><strong>{{vehicle()?.name}}</strong></div>
 
-    <div class="vehicle-features mt-14 grid justify-items-center gap-y-5 gap-x-4 grid-cols-1 2xs:grid-cols-2 md:grid-cols-3">
-
-        <div class="flex items-center gap-4">
-          <img class="w-6 h-fit" src="assets/images/palanca-de-cambios.png" alt="palanca">
-          <div class="flex flex-col gap-1">
-            <div class="text-sm text-archivo text-[#6F6D71]">Performance</div>
-            <div class="text-sm text-archivo">Caja Manual de 6 marchas</div>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-4">
-          <img class="w-6 h-fit" src="assets/images/palanca-de-cambios.png" alt="palanca">
-          <div class="flex flex-col gap-1">
-            <div class="text-sm text-archivo text-[#6F6D71]">Performance</div>
-            <div class="text-sm text-archivo">Caja Manual de 6 marchas</div>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-4">
-          <img class="w-6 h-fit" src="assets/images/palanca-de-cambios.png" alt="palanca">
-          <div class="flex flex-col gap-1">
-            <div class="text-sm text-archivo text-[#6F6D71]">Performance</div>
-            <div class="text-sm text-archivo">Caja Manual de 6 marchas</div>
-          </div>
-        </div>
-
-
-        <div class="flex items-center gap-4">
-          <img class="w-6 h-fit" src="assets/images/palanca-de-cambios.png" alt="palanca">
-          <div class="flex flex-col gap-1">
-            <div class="text-sm text-archivo text-[#6F6D71]">Performance</div>
-            <div class="text-sm text-archivo">Caja Manual de 6 marchas</div>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-4">
-          <img class="w-6 h-fit" src="assets/images/palanca-de-cambios.png" alt="palanca">
-          <div class="flex flex-col gap-1">
-            <div class="text-sm text-archivo text-[#6F6D71]">Performance</div>
-            <div class="text-sm text-archivo">Caja Manual de 6 marchas</div>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-4">
-          <img class="w-6 h-fit" src="assets/images/palanca-de-cambios.png" alt="palanca">
-          <div class="flex flex-col gap-1">
-            <div class="text-sm text-archivo text-[#6F6D71]">Performance</div>
-            <div class="text-sm text-archivo">Caja Manual de 6 marchas</div>
-          </div>
+      <div class="vehicle-image flex justify-center">
+        <div class="card">
+          <p-galleria [value]="vehicle()?.images" [showThumbnailNavigators]="true" [responsiveOptions]="responsiveOptions" [containerStyle]="{ 'max-width': '640px' }" [numVisible]="3">
+              <ng-template #item let-item>
+                  <img [src]="url + item" style="width: 100%; display: block;"/>
+              </ng-template>
+              <ng-template #thumbnail let-item>
+                  <img [src]="url + item" style="width: 30%; display: block;" />
+              </ng-template>
+          </p-galleria>
         </div>
       </div>
 
-      <div class="reserva-box page-section">
-        <div class="search-box flex flex-col gap-6 sm:gap-0 sm:flex-row justify-between items-center">
-          <div class="form-section flex flex-col gap-4 lg:flex-row justify-between items-center w-full">
-            <div class="mark text-archivo text-base text-[#000] font-bold">Toyota Etios SE</div>
-            <div class="properties flex gap-4 flex-wrap justify-center">
-              <div class="flex gap-2">
-                <img class="w-6 h-fit" src="assets/images/car-features/cinturon-de-seguridad.png" alt="cinturon">
-                <div class="text-archivo text-base text-[#000]"><strong>5</strong> Personas</div>
-              </div>
-              <div class="flex gap-2">
-                <img class="w-6 h-fit" src="assets/images/car-features/puerta-del-auto.png" alt="puerta">
-                <div class="text-archivo text-base text-[#000]"><strong>5</strong> Puertas</div>
-              </div>
-              <div class="flex gap-2">
-                <img class="w-6 h-fit" src="assets/images/car-features/valija.png" alt="valija">
-                <div class="text-archivo text-base text-[#000]"><strong>3</strong> Valijas</div>
-              </div>
-              <div class="flex gap-2">
-                <img class="w-6 h-fit" src="assets/images/car-features/copo-de-nieve.png" alt="A/C">
-                <div class="text-archivo text-base text-[#000]">A/C</div>
-              </div>
-              <div class="flex gap-2">
-                <img class="w-6 h-fit" src="assets/images/car-features/transmision-automatica.png" alt="transmision">
-                <div class="text-archivo text-base text-[#000]">Automático</div>
-              </div>
+      @if (vehicle()?.description) {
+        <div class="vehicle-description mt-14 flex flex-col sm:flex-row justify-center gap-6">
+          <div [innerHTML]="vehicle()?.description"></div>
+          <!-- <div class="flex flex-col gap-2 w-2/5">
+            <div class="text-archivo text-[#F90] font-bold text-xl">Confort & Tecnología</div>
+            <div class="text-archivo text-[#6F6D71] text-base">Audio con pantalla táctil de 7” y conectividad: Apple CarPlay® y Android Auto® Disponible en versiones XLS Pack. Disponible sólo por conexión USB.</div>
+          </div>
+          <div class="flex flex-col gap-2 w-2/5">
+            <div class="text-archivo text-[#F90] font-bold text-xl">Seguridad</div>
+            <div class="text-archivo text-[#6F6D71] text-base">Sistema de anclaje ISOFIX x2 en asientos traseros. Airbag conductor y acompañante. Control de estabilidad (VSC), Control de Tracción (TRC) y </div>
+          </div> -->
+        </div>
+      }
+      @if ( vehicle()?.other_features && vehicle()?.other_features!.length > 0) {
+        <div class="vehicle-features mt-14 flex justify-center gap-6 flex-wrap">
+        @for (feature of vehicle()?.other_features; track $index) {
+          <div class="flex items-center gap-4 border rounded-md p-2">
+            <img class="w-6 h-fit" [src]="url + feature.icon" alt="icon">
+            <div class="flex flex-col gap-1">
+              <div class="text-sm text-archivo text-[#6F6D71]">{{ feature.title }}</div>
+              <div class="text-sm text-archivo">{{ feature.description }}</div>
             </div>
-            <div class="button-section">
-              <a [routerLink]="'/checkout'"><button class="button-rent hover:opacity-80">Reservar</button></a>
+          </div>
+        }
+        </div>
+      }
+
+        <div class="reserva-box page-section">
+          <div class="search-box flex flex-col gap-6 sm:gap-0 sm:flex-row justify-between items-center">
+            <div class="form-section flex flex-col gap-4 lg:flex-row justify-between items-center w-full">
+              <div class="mark text-archivo text-base text-[#000] font-bold">{{ vehicle()?.name }}</div>
+              <div class="properties flex gap-4 flex-wrap justify-center">
+                <div class="flex gap-2">
+                  <img class="w-6 h-fit" src="assets/images/car-features/cinturon-de-seguridad.png" alt="cinturon">
+                  <div class="text-archivo text-base text-[#000]"><strong>{{ vehicle()?.main_features?.persons }}</strong> Personas</div>
+                </div>
+                <div class="flex gap-2">
+                  <img class="w-6 h-fit" src="assets/images/car-features/puerta-del-auto.png" alt="puerta">
+                  <div class="text-archivo text-base text-[#000]"><strong>{{ vehicle()?.main_features?.doors }}</strong> Puertas</div>
+                </div>
+                <div class="flex gap-2">
+                  <img class="w-6 h-fit" src="assets/images/car-features/valija.png" alt="valija">
+                  <div class="text-archivo text-base text-[#000]"><strong>{{ vehicle()?.main_features?.luggage }}</strong> Valijas</div>
+                </div>
+                <div class="flex gap-2">
+                  <img class="w-6 h-fit" src="assets/images/car-features/copo-de-nieve.png" alt="A/C">
+                  <div class="text-archivo text-base text-[#000]">{{ vehicle()?.main_features?.air_conditioning ? 'Con ' : 'Sin ' }}A/C</div>
+                </div>
+                <div class="flex gap-2">
+                  <img class="w-6 h-fit" src="assets/images/car-features/transmision-automatica.png" alt="transmision">
+                  <div class="text-archivo text-base text-[#000]">{{ vehicle()?.main_features?.gearbox === 'manual' ? 'Manual' : 'Automático' }}</div>
+                </div>
+              </div>
+              <div class="button-section">
+                <a [routerLink]="'/checkout'"><button class="button-rent hover:opacity-80">Reservar</button></a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+    </div>
   </div>
-</div>
+}
+
+<p-toast />

@@ -33,6 +33,10 @@ export class VehiculoService {
     return this.http.get<Vehicle[]>(`${ this._url }/cars`)
   }
 
+  getVehiculo(id: number): Observable<Vehicle> {
+    return this.http.get<Vehicle>(`${ this._url }/cars/${ id }`)
+  }
+
   setVehiculo(vehiculoData: any) {
     const fd = toFormData(vehiculoData, undefined, undefined, {
       repeatKeysFor: ['images', 'vehicle_type', 'other_features'],

@@ -5,15 +5,17 @@
       <div class="title text-5xl">Nuestra Flota</div>
     </div>
     <div class="mt-11">
-      <search-box />
+      <search-box mode="emit" [initialFilters]="initialFilters() || undefined" (search)="applyFilters($event)"/>
     </div>
-    <div class="mt-11 grid gap-x-8 gap-y-14 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      <a routerLink="/servicio"><vehicle-card /></a>
-      <a routerLink="/servicio"><vehicle-card /></a>
-      <a routerLink="/servicio"><vehicle-card /></a>
-      <a routerLink="/servicio"><vehicle-card /></a>
-      <a routerLink="/servicio"><vehicle-card /></a>
-      <a routerLink="/servicio"><vehicle-card /></a>
-    </div>
+    @if (vehiclesShow()) {
+      <div class="mt-11 grid gap-x-8 gap-y-14 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        @for (vehicle of vehiclesShow(); track vehicle.id) {
+          <a class="block" [routerLink]="['/servicio', vehicle.id]"><vehicle-card [vehicle]="vehicle" [favorite]="isFavorite(vehicle.id)" (toggleFavorite)="onToggleFavorite($event)"></vehicle-card></a>
+        }
+      </div>
+    }
   </div>
 </div>
+
+<p-confirmdialog />
+<p-toast />

@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, inject, Input, OnInit, Output, signal, SimpleChanges } from '@angular/core';
 import { SelectModule } from 'primeng/select';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'search-box',
@@ -19,11 +19,11 @@ import { RouterModule } from '@angular/router';
       <div class="form-section flex w-full">
         <form [formGroup]="searchForm" class="flex text-lato flex-col lg:flex-row justify-between gap-6 w-full sm:w-3/4">
           <p-floatlabel variant="on" class="w-full">
-            <p-select [options]="vehicleTypes()" id="type" formControlName="type" optionLabel="label" optionValue="value"  class="w-full" />
+            <p-select [options]="vehicleTypes()" id="type" formControlName="vehicle_type" optionLabel="label" optionValue="value"  class="w-full" />
             <label for="type">Tipo</label>
           </p-floatlabel>
           <p-floatlabel variant="on" class="w-full">
-            <input pInputText type="text" formControlName="makeModel" id="makeModelLabel" class="w-full" />
+            <input pInputText type="text" formControlName="name" id="makeModelLabel" class="w-full" />
             <label for="makeModelLabel">Marca/Modelo</label>
           </p-floatlabel>
 
@@ -40,7 +40,7 @@ import { RouterModule } from '@angular/router';
         </form>
       </div>
       <div class="button-section">
-        <button class="button-rent hover:opacity-80"><a routerLink="/flota">Buscar</a></button>
+        <button class="button-rent hover:opacity-80" (click)="onSearch()">Buscar</button>
       </div>
     </div>
 
@@ -66,35 +66,60 @@ import { RouterModule } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchBoxComponent implements OnInit{
+  @Input()  mode: 'emit' | 'navigate' = 'emit';
+  @Input()  initialFilters?: { vehicle_type?: string; name?: string };   // 👈 NUEVO
+  @Output() search = new EventEmitter<{ vehicle_type?: string; name?: string }>();
 
-  public vehicleTypes = signal<any[]>([
-    {
-      value: 0,
-      label: 'Particular'
-    },
-    {
-      value: 1,
-      label: 'Corporativo'
-    },
-    {
-      value: 2,
-      label: 'Todo'
-    }
+  public vehicleTypes = signal([
+    { value: 'particular',  label: 'Particular' },
+    { value: 'corporativo', label: 'Corporativo' },
+    { value: 'favoritos',   label: 'Favoritos' },
+    { value: 'todos',       label: 'Todo' }
   ]);
+
   public searchForm!: FormGroup;
   private fb = inject(FormBuilder);
-
-  constructor() {
-    this.initForm();
-  }
+  private router = inject(Router);
 
   ngOnInit(): void {
+    this.searchForm = this.fb.group({
+      vehicle_type: new FormControl<string | null>(null),
+      name: new FormControl<string | null>(null),
+    });
+
+    // Si ya vino initialFilters antes de ngOnInit (caso raro), aplicarlos:
+    if (this.initialFilters) this.patchFromInitial(this.initialFilters);
   }
 
-  initForm() {
-    this.searchForm = this.fb.group({
-      type: new FormControl<any>(null, [Validators.required]),
-      makeModel: new FormControl<null>(null, [Validators.required]),
-    })
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['initialFilters'] && this.searchForm) {
+      this.patchFromInitial(changes['initialFilters'].currentValue);
+    }
+  }
+
+  private patchFromInitial(f: { vehicle_type?: string; name?: string }) {
+    // Si el type viene indefinido → null en el form. Si viene algo distinto a 'todos', setearlo.
+    const typeValue = f?.vehicle_type ?? null;
+    this.searchForm.patchValue(
+      { vehicle_type: typeValue, name: f?.name ?? null },
+      { emitEvent: false }
+    );
+  }
+
+  onSearch() {
+    const filters = this.buildFilters();
+    if (this.mode === 'emit') {
+      this.search.emit(filters);
+    } else {
+      this.router.navigate(['/flota'], { queryParams: filters });
+    }
+  }
+
+  private buildFilters(): { vehicle_type?: string; name?: string } {
+    const { vehicle_type, name } = this.searchForm.value;
+    return {
+      vehicle_type: vehicle_type && vehicle_type !== 'todos' ? vehicle_type : undefined,
+      name: name?.trim() || undefined,
+    };
   }
 }

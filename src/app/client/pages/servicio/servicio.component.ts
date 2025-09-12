@@ -1,16 +1,25 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  inject,
   model,
   OnInit,
+  signal,
 } from '@angular/core';
 import { GalleriaModule } from 'primeng/galleria';
 import { DividerModule } from 'primeng/divider';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { LoadingService } from '../../../admin/service/loading.service';
+import { VehiculoService } from '../../../admin/service/vehiculo.service';
+import { Vehicle } from '../../../core/Vehicle';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-servicio',
-  imports: [GalleriaModule, DividerModule, RouterModule],
+  imports: [GalleriaModule, DividerModule, RouterModule, ToastModule],
+  providers: [MessageService],
   templateUrl: './servicio.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
@@ -65,6 +74,8 @@ export default class ServicioComponent implements OnInit {
   // email: string;
   // phone: string;
   // observation: string;
+  public vehicle = signal<Vehicle | null>(null);
+  public url = environment.api;
 
   images: any = model([]);
 
@@ -82,6 +93,11 @@ export default class ServicioComponent implements OnInit {
       numVisible: 1,
     },
   ];
+
+  private route = inject(ActivatedRoute);
+  private messageService = inject(MessageService);
+  private loadingService = inject(LoadingService);
+  private vehicleService = inject(VehiculoService);
 
   ngOnInit() {
     this.images.set([
@@ -110,5 +126,33 @@ export default class ServicioComponent implements OnInit {
         title: 'Title 2',
       },
     ]);
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.getVehicle(id);
+  }
+
+  get vehicleTypeLabel(): string {
+    const v = this.vehicle();
+    if (!v || !Array.isArray(v.vehicle_type)) return '';
+
+    return v.vehicle_type
+      .map((obj: any) => {
+        const t = obj?.type ?? '';
+        return t.charAt(0).toUpperCase() + t.slice(1);
+      })
+      .join(' - ');
+  }
+
+  private getVehicle(id: number) {
+    this.loadingService.show();
+    this.vehicleService.getVehiculo(id)
+    .subscribe(vehiculo => {
+      this.vehicle.set(vehiculo);
+      this.loadingService.hide();
+    }, (error) => {
+        console.error(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al traer vehículo.' });
+        this.loadingService.hide();
+      })
+
   }
 }

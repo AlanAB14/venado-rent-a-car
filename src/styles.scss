@@ -72,6 +72,28 @@ html {
   }
 }
 
+.p-popover:before {
+    bottom: 100%;
+    right: .2rem!important;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    left: auto!important;
+}
+
+.p-popover:after {
+    bottom: 100%;
+    right: .31rem!important;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    left: auto!important;
+}
+
 input:-webkit-autofill,
 textarea:-webkit-autofill,
 select:-webkit-autofill {

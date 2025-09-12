@@ -20,7 +20,7 @@ export const routes: Routes = [
         loadComponent: () => import('./client/pages/flota/flota.component')
       },
       {
-        path: 'servicio',
+        path: 'servicio/:id',
         loadComponent: () => import('./client/pages/servicio/servicio.component')
       },
       {

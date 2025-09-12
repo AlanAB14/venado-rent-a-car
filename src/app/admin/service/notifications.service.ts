@@ -31,5 +31,9 @@ export class NotificationsService {
     return this.http.get<any>(`${ this._url }/user-notifications`);
   }
 
+  deleteNotification(id: number) {
+    return this.http.delete<any>(`${ this._url }/user-notifications/${id}`);
+  }
+
 
 }
