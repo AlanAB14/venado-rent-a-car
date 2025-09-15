@@ -9,6 +9,8 @@ import { TextareaModule } from 'primeng/textarea';
 import { MessageModule } from 'primeng/message';
 import Swal from 'sweetalert2';
 import { Router, RouterModule } from '@angular/router';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-checkout',
@@ -21,8 +23,10 @@ import { Router, RouterModule } from '@angular/router';
     DatePickerModule,
     TextareaModule,
     MessageModule,
-    RouterModule
+    RouterModule,
+    ToastModule
   ],
+  providers: [MessageService],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -73,5 +77,19 @@ export default class CheckoutComponent {
         this.router.navigateByUrl('/')
       });
     }, 2000);
+  }
+
+  private getVehicle(id: number) {
+    this.loadingService.show();
+    this.vehicleService.getVehiculo(id)
+    .subscribe(vehiculo => {
+      this.vehicle.set(vehiculo);
+      this.loadingService.hide();
+    }, (error) => {
+        console.error(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al traer vehículo.' });
+        this.loadingService.hide();
+      })
+
   }
 }

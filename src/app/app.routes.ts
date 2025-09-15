@@ -32,9 +32,10 @@ export const routes: Routes = [
         loadComponent: () => import('./client/pages/contacto/contacto.component')
       },
       {
-        path: 'checkout',
+        path: 'checkout/:id',
         loadComponent: () => import('./client/pages/checkout/checkout.component')
       },
+      { path: '**', redirectTo: '', pathMatch: 'full' },
     ],
   },
   {

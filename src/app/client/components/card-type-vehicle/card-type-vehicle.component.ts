@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { ChangeDetectionStrategy, Component, input, inject } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
 
 @Component({
   selector: 'card-type-vehicle',
@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
       <div class="text flex flex-col">
         <div class="upper-title">VEHÍCULOS</div>
         <div class="title">{{ title() }}</div>
-        <div class="link-text mt-auto cursor-pointer"><a routerLink="/flota">Conocé más</a></div>
+        <div class="link-text mt-auto cursor-pointer"><a (click)="navigateFlota()">Conocé más</a></div>
       </div>
       <div class="image">
         <img [src]="'assets/images/' + image()" alt="">
@@ -26,4 +26,13 @@ export class CardTypeVehicleComponent {
   public title = input<string>('');
   public bgColor = input<string>('');
   public link = input<string>('');
+  private route = inject(Router);
+
+  navigateFlota() {
+    if (this.title() === 'Particular') {
+      this.route.navigate(['/flota'], { queryParams: { vehicle_type: 'particular' } });
+    } else {
+      this.route.navigate(['/flota'], { queryParams: { vehicle_type: 'corporativo' } });
+    }
+  }
 }

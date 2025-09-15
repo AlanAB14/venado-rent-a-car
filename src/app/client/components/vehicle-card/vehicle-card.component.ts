@@ -10,7 +10,7 @@ import { environment } from '../../../../environments/environment';
     ChipModule, CommonModule
   ],
   template: `
-    <div class="card flex flex-col gap-4">
+    <div class="card flex flex-col gap-4 animate-fade-in">
       <div class="box flex flex-col gap-20 rounded-xl p-5" [ngClass]="bgColor">
         <div class="heart ml-auto flex justify-center items-center p-3 bg-white rounded-full w-min h-min hover:cursor-pointer hover:opacity-85" (click)="onHeartClick($event)">
           <i class="pi pi-heart" [ngStyle]="{
@@ -114,8 +114,8 @@ export class VehicleCardComponent {
     }
 
     const type = (v.vehicle_type[0]?.type ?? '').toLowerCase();
-    if (type === 'particular') return 'bg-[#725287]';
-    if (type === 'corporativo') return 'bg-[#FEBF4E]';
+    if (type === 'particular') return 'bg-[#FEBF4E]';
+    if (type === 'corporativo') return 'bg-[#725287]';
 
     return 'bg-[#725287]'; // fallback
   }
