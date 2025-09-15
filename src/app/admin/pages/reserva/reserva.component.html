@@ -80,6 +80,10 @@
 <p-toast />
 <p-dialog [modal]="true" [closable]="false" [visible]="reservaSelected() ? true : false" [style]="{ width: '25rem' }">
     <div class="flex items-center gap-4 mb-8">
+        <label for="rn" class="font-semibold w-24">Nro. Reserva</label>
+        <p>{{ reservaSelected()?.reservation_number }}</p>
+      </div>
+    <div class="flex items-center gap-4 mb-8">
         <label for="username" class="font-semibold w-24">Nombre</label>
         <p>{{ reservaSelected()?.name }}</p>
       </div>
@@ -97,7 +101,7 @@
       </div>
       <div class="flex items-center gap-4 mb-8">
         <label for="email" class="font-semibold w-24">Fecha solicitada</label>
-        <p>Desde {{ reservaSelected()?.date_start | date:'dd/MM/yyyy HH:mm' }} - Hasta {{ reservaSelected()?.date_end | date:'dd/MM/yyyy HH:mm' }}</p>
+        <p>Desde {{ reservaSelected()?.date_start | date:'dd/MM/yyyy' }} - Hasta {{ reservaSelected()?.date_end | date:'dd/MM/yyyy' }}</p>
       </div>
       <div class="flex items-center gap-4 mb-8">
         <label for="email" class="font-semibold w-24">Precio</label>

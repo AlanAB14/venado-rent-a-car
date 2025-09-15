@@ -7,4 +7,5 @@ export interface Reservation {
   email:       string;
   phone:       string;
   car_name:    string;
+  reservation_number: string;
 }

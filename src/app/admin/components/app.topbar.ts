@@ -10,11 +10,13 @@ import { Subscription } from 'rxjs';
 import { Popover, PopoverModule } from 'primeng/popover';
 import { UserNotification } from '../../core/UserNotification';
 import { ButtonModule } from 'primeng/button';
+import { AuthService } from '../../auth/services/auth.service';
+
 @Component({
-    selector: 'app-topbar',
-    standalone: true,
-    imports: [RouterModule, ButtonModule, BadgeModule, OverlayBadgeModule, CommonModule, PopoverModule, CommonModule],
-    template: ` <div class="layout-topbar">
+  selector: 'app-topbar',
+  standalone: true,
+  imports: [RouterModule, ButtonModule, BadgeModule, OverlayBadgeModule, CommonModule, PopoverModule, CommonModule],
+  template: ` <div class="layout-topbar">
         <div class="layout-topbar-logo-container">
             <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
                 <i class="pi pi-bars"></i>
@@ -29,8 +31,8 @@ import { ButtonModule } from 'primeng/button';
                 <button type="button" class="layout-topbar-action"  (click)="onBellClick($event)">
                   @if (notifications() > 0) {
                     <p-overlaybadge [value]="notifications()">
-                        <i class="pi pi-bell"></i>
-                      </p-overlaybadge>
+                      <i class="pi pi-bell"></i>
+                    </p-overlaybadge>
                   }@else {
                     <i class="pi pi-bell"></i>
                   }
@@ -40,6 +42,9 @@ import { ButtonModule } from 'primeng/button';
                     <i [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.isDarkTheme(), 'pi-sun': !layoutService.isDarkTheme() }"></i>
                 </button>
 
+                <button type="button" class="layout-topbar-action" (click)="exit()">
+                    <i class="pi pi-sign-out"></i>
+                </button>
 
                 <p-popover
                   #op
@@ -54,6 +59,9 @@ import { ButtonModule } from 'primeng/button';
                                     <div>
                                         <span class="font-medium">Solicitud de {{ notification.type }}</span>
                                         <div class="text-sm text-surface-500 dark:text-surface-400">Tienes una solicitud de {{ notification.user }} - {{ notification.created_at | date:'dd/MM/yyyy HH:mm' }}</div>
+                                        @if (notification.lastReadBy) {
+                                          <div class="text-xs italic">Leído por: {{ notification.lastReadBy.username }}</div>
+                                        }
                                     </div>
                                     <div>
                                       <p-button icon="pi pi-trash" (onClick)="onDeleteClick($event, notification)" [rounded]="true" [text]="true" />
@@ -72,146 +80,123 @@ import { ButtonModule } from 'primeng/button';
                   </div>
                 </p-popover>
             </div>
-
-            <!-- <div class="layout-topbar-menu hidden lg:block">
-                <div class="layout-topbar-menu-content">
-                    <button type="button" class="layout-topbar-action">
-                        <i class="pi pi-inbox"></i>
-                        <span>Messages</span>
-                    </button>
-                    <button type="button" class="layout-topbar-action">
-                        <i class="pi pi-user"></i>
-                        <span>Profile</span>
-                    </button>
-                </div>
-            </div> -->
         </div>
     </div>`
 })
-export class AppTopbar implements OnInit{
-    items!: MenuItem[];
-    public notifications = computed(() => this.unreadIds().size)
-    public userNotifications = signal<UserNotification[]>([]);
-    public decoratedNotifications = computed(() => {
-      const list = this.userNotifications();
-      const unread = this.unreadIds();
-      return list.map(n => ({ ...n, __unread: unread.has(n.id) }));
+export class AppTopbar implements OnInit {
+  items!: MenuItem[];
+
+  /** número que se muestra en el badge */
+  public notifications = computed(() => this.unreadIds().size);
+
+  /** listado completo proveniente del backend */
+  public userNotifications = signal<UserNotification[]>([]);
+
+  /** listado decorado con flag __unread (UI) */
+  public decoratedNotifications = computed(() => {
+    const list = this.userNotifications();
+    const unread = this.unreadIds();
+    return list.map(n => ({ ...n, __unread: unread.has(n.id) }));
+  });
+
+  /** cache local opcional (se sobreescribe con lo del backend) */
+  private readonly LS_UNREAD_IDS_KEY = 'topbar.unreadIds';
+
+  /** set de IDs no leídos */
+  public unreadIds = signal<Set<number>>(new Set<number>());
+
+  private notif = inject(NotificationsService);
+  private sub?: Subscription;
+  private zone = inject(NgZone);
+  private router = inject(Router);
+  private authService = inject(AuthService);
+  @ViewChild('op') op!: Popover;
+
+  constructor(public layoutService: LayoutService) {}
+
+  ngOnInit(): void {
+    // 1) cache local por latencia
+    this.unreadIds.set(this.readUnreadIdsFromStorage());
+
+    // 2) evento en vivo: refrescar desde backend
+    this.sub = this.notif.onContactCreated<any>().subscribe(() => {
+      this.zone.run(() => this.getNotifications());
     });
 
-    private readonly LS_UNREAD_IDS_KEY = 'topbar.unreadIds';
-    public unreadIds = signal<Set<number>>(new Set<number>());
-    private notif = inject(NotificationsService);
-    private sub?: Subscription;
-    private zone = inject(NgZone);
-    private router = inject(Router);
-    @ViewChild('op') op!: Popover;
-    constructor(public layoutService: LayoutService) {}
+    // 3) carga inicial
+    this.getNotifications();
+  }
 
-    ngOnInit(): void {
-      this.unreadIds.set(this.readUnreadIdsFromStorage());
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
 
-      this.sub = this.notif.onContactCreated<any>().subscribe(c => {
-        console.log(c, 'llego una nueva notificacion');
-        this.zone.run(() => {
-          if (c?.id != null) {
-            const next = new Set(this.unreadIds());
-            next.add(c.id);
-            this.unreadIds.set(next);
-            this.writeUnreadIdsToStorage(next);
-          }         // <-- persistir contador
-          this.getNotifications();
-        });
-        // acá también podés refrescar la tabla si querés
-        // this.contactsService.getContactForms().subscribe(...)
-      });
+  onBellClick(event: Event) {
+    this.op.toggle(event);
+  }
 
-      this.getNotifications();
-    }
+  toggleDarkMode() {
+    this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
+  }
 
-    onBellClick(event: Event) {
-      this.op.toggle(event);
-    }
-
-    toggleDarkMode() {
-        this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
-    }
-
+  /** Trae lista y calcula/usa unreadIds según formato de respuesta */
   getNotifications() {
     this.notif.getNotifications().subscribe({
-      next: (list) => {
+      next: (res: any) => {
+        // Soportar: A) { list, unreadIds }  B) array plano
+        const list: UserNotification[] = Array.isArray(res) ? res : (res?.list ?? []);
         this.userNotifications.set(list);
 
-        // LIMPIEZA: si el set tiene IDs que ya no existen (borradas en backend), sacarlos
-        const existingIds = new Set(list.map((n: any) => n.id));
-        const next = new Set<number>();
-        for (const id of this.unreadIds()) if (existingIds.has(id)) next.add(id);
-        if (next.size !== this.unreadIds().size) {
-          this.unreadIds.set(next);
-          this.writeUnreadIdsToStorage(next);
+        let nextSet: Set<number>;
+        if (!Array.isArray(res) && Array.isArray(res?.unreadIds)) {
+          // A) backend ya manda unreadIds
+          nextSet = new Set<number>(res.unreadIds);
+        } else {
+          // B) backend NO manda unreadIds → derivar en cliente
+          // Regla: si existe flag read → !read; si no, “no leída” = sin lastReadBy y sin last_read_at
+          const unreadIds = list
+            .filter((n: any) => ('read' in n) ? !n.read : !(n.lastReadBy || n.last_read_at))
+            .map(n => n.id);
+          nextSet = new Set<number>(unreadIds);
         }
+
+        this.unreadIds.set(nextSet);
+        this.writeUnreadIdsToStorage(nextSet); // cache opcional
       },
       error: (error) => console.error('Error fetching notifications', error)
     });
   }
 
-    ngOnDestroy(): void {
-      this.sub?.unsubscribe();
-    }
-
-    toggle(event: any) {
-      this.onBellClick(event);
-    }
-
-    public markAsRead(id: number) {
-      const next = new Set(this.unreadIds());
-      if (next.delete(id)) {
-        this.unreadIds.set(next);
-        this.writeUnreadIdsToStorage(next);
-      }
-    }
-
-    public trashNotification(ev: Event, id: number) {
-     ev.stopPropagation();
-     this.markAsRead(id);
-      // Si además querés borrarla del listado (solo UI):
-      // this.userNotifications.set(this.userNotifications().filter(n => n.id !== id));
-      // O si querés borrarla en backend, acá llamás a un delete y luego refrescás.
-    }
-
-  private readUnreadIdsFromStorage(): Set<number> {
-    try {
-      const raw = localStorage.getItem(this.LS_UNREAD_IDS_KEY);
-      const arr = raw ? JSON.parse(raw) as number[] : [];
-      return new Set(arr.filter(n => Number.isFinite(n)));
-    } catch { return new Set<number>(); }
+  isSuperAdmin() {
+    return this.authService.isSuperAdmin();
   }
 
-  private writeUnreadIdsToStorage(set: Set<number>): void {
-    try {
-      localStorage.setItem(this.LS_UNREAD_IDS_KEY, JSON.stringify([...set]));
-    } catch {}
+  isAdmin() {
+    return this.authService.isAdmin();
   }
 
-  onNotificationClick(notification: UserNotification) {
-    // 1) marcar como leída (la saca de notificaciones nuevas)
+  /** Marca como leída en UI + backend */
+  public markAsRead(id: number) {
+    console.log(this.authService.getId())
+    const next = new Set(this.unreadIds());
+    if (next.delete(id)) {
+      this.unreadIds.set(next);
+      this.writeUnreadIdsToStorage(next);
+    }
+    this.notif.markAsRead(id, this.authService.getId()).subscribe({
+      next: () => {
+        // refresco para ver lastReadBy/last_read_at
+        this.getNotifications();
+      },
+      error: (e) => console.error('Error marking as read', e)
+    });
+  }
+
+  /** Elimina (marca leída + borra en backend y quita de la lista) */
+  public onDeleteClick(ev: Event, notification: UserNotification) {
+    ev.stopPropagation();
     this.markAsRead(notification.id);
 
-    // 2) navegar según tipo
-    if (notification.type === 'contacto') {
-      this.router.navigateByUrl('admin/contacto');
-    } else if (notification.type === 'reserva') {
-      this.router.navigateByUrl('admin/reserva');
-    }
-
-    // 3) cerrar el popover (PrimeNG Popover expone hide())
-    this.op?.hide();
-  }
-
-  onDeleteClick(ev: Event, notification: UserNotification) {
-    ev.stopPropagation();          // no dispares el click del <li>
-    this.markAsRead(notification.id);  // bajar badge y quitar bg
-
-    // borrar en backend y refrescar (o quitar de la lista en UI)
     this.notif.deleteNotification(notification.id).subscribe({
       next: () => {
         this.userNotifications.set(
@@ -222,4 +207,37 @@ export class AppTopbar implements OnInit{
     });
   }
 
+  /** Click en una notificación: marcar leída, navegar y cerrar popover */
+  onNotificationClick(notification: UserNotification) {
+    this.markAsRead(notification.id);
+
+    if (notification.type === 'contacto') {
+      this.router.navigateByUrl('admin/contacto');
+    } else if (notification.type === 'reserva') {
+      this.router.navigateByUrl('admin/reserva');
+    }
+
+    this.op?.hide();
+  }
+
+  exit() {
+    this.authService.logout();
+  }
+
+  /** ---------- utilidades de cache local ---------- */
+  private readUnreadIdsFromStorage(): Set<number> {
+    try {
+      const raw = localStorage.getItem(this.LS_UNREAD_IDS_KEY);
+      const arr = raw ? (JSON.parse(raw) as number[]) : [];
+      return new Set(arr.filter(n => Number.isFinite(n)));
+    } catch {
+      return new Set<number>();
+    }
+  }
+
+  private writeUnreadIdsToStorage(set: Set<number>): void {
+    try {
+      localStorage.setItem(this.LS_UNREAD_IDS_KEY, JSON.stringify([...set]));
+    } catch {}
+  }
 }

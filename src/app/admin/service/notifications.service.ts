@@ -4,6 +4,7 @@ import { Observable, fromEvent } from 'rxjs';
 import { EnvironmentInjector } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { UserNotification } from '../../core/UserNotification';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationsService {
@@ -27,8 +28,16 @@ export class NotificationsService {
     return fromEvent<T>(this.socket, 'contact:created');
   }
 
-  getNotifications(): Observable<any> {
-    return this.http.get<any>(`${ this._url }/user-notifications`);
+  getNotifications() {
+    return this.http.get<{
+      list: UserNotification[],
+      unreadIds: number[],
+      unreadCount: number
+    }>(`${ this._url }/user-notifications`);
+  }
+
+  markAsRead(id: number, userId: number) {
+    return this.http.post(`${ this._url }/user-notifications/${id}/read`, { userId });
   }
 
   deleteNotification(id: number) {

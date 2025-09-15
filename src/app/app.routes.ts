@@ -35,7 +35,6 @@ export const routes: Routes = [
         path: 'checkout/:id',
         loadComponent: () => import('./client/pages/checkout/checkout.component')
       },
-      { path: '**', redirectTo: '', pathMatch: 'full' },
     ],
   },
   {
@@ -81,5 +80,6 @@ export const routes: Routes = [
         loadComponent: () => import('./admin/pages/reserva/reserva.component')
       }
     ]
-  }
+  },
+  { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

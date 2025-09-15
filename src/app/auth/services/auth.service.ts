@@ -59,17 +59,27 @@ export class AuthService {
 
   getUser(): string {
     let finalData = this.getTokenJson();
-    return finalData.newUser.user;
+    return finalData;
   }
 
   getSuperAdmin(): boolean {
     let finalData = this.getTokenJson();
-    return finalData.newUser.super_admin;
+    return finalData.super_admin;
+  }
+
+  isSuperAdmin(): boolean {
+    let finalData = this.getTokenJson();
+    return finalData.role.id === 1 ? true : false;
+  }
+
+  isAdmin(): boolean {
+    let finalData = this.getTokenJson();
+    return finalData.role.id === 2 ? true : false;
   }
 
   getId(): number {
     let finalData = this.getTokenJson();
-    return finalData.newUser.id;
+    return finalData.id;
   }
 
   logout() {

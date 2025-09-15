@@ -75,7 +75,7 @@
                 </div>
               </div>
               <div class="button-section">
-                <a [routerLink]="'/checkout'"><button class="button-rent hover:opacity-80">Reservar</button></a>
+                <a [routerLink]="['/checkout', vehicle()?.id]"><button class="button-rent hover:opacity-80">Reservar</button></a>
               </div>
             </div>
           </div>

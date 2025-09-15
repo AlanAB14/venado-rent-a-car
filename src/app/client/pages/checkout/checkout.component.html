@@ -64,7 +64,7 @@
                           <input formControlName="email" pInputText id="email" type="email" placeholder="Email" fluid />
                         </div>
                         <div class="field text-lato">
-                          <input formControlName="phone" class="text-archivo" pInputText id="email" type="email" placeholder="Teléfono" fluid />
+                          <input onlyNumbers formControlName="phone" class="text-archivo" pInputText id="email" type="email" placeholder="Teléfono" fluid />
                         </div>
                       </form>
                     </div>
@@ -81,10 +81,10 @@
                         <div class="text-center mt-4 mb-4 text-xl font-semibold">Ingresá fecha solicitada</div>
                           <form [formGroup]="dateForm" class="flex flex-col gap-2">
                             <div class="field text-lato">
-                              <p-datepicker formControlName="date_start" class="w-full" placeholder="Fecha de Inicio" />
+                              <p-datepicker formControlName="date_start" dateFormat="dd/mm/yy" class="w-full" placeholder="Fecha de Inicio" />
                             </div>
                             <div class="field text-lato">
-                            <p-datepicker formControlName="date_end" [minDate]="dateForm.value.date_start" class="w-full" placeholder="Fecha de Devolución" />
+                            <p-datepicker formControlName="date_end" dateFormat="dd/mm/yy" [minDate]="minEndDate" class="w-full" placeholder="Fecha de Devolución" />
                           </div>
                           <div class="field text-lato">
                             <textarea rows="5" cols="30" pTextarea placeholder="Observaciones" formControlName="observation" fluid></textarea>
@@ -103,7 +103,7 @@
                     <div class="flex flex-col gap-2 mx-auto" style="min-height: 16rem; max-width: 24rem">
                         <div class="text-center mt-4 mb-4 text-xl font-semibold">Verifica los datos ingresados</div>
                         <div class="flex flex-col w-full gap-4">
-                          <div class="car text-lato text-base"><strong>Vehículo:</strong> Toyota Etios Se</div>
+                          <div class="car text-lato text-base"><strong>Vehículo:</strong> {{ vehicle()?.name }}</div>
                           <div class="personales flex flex-col gap-1 p-4 border-2 rounded-lg">
                             <div class="text-lato text-base font-bold">Datos Personales</div>
                             @if (personalForm.value.name) { <div>Nombre: {{ personalForm.value.name }}</div> }
@@ -112,8 +112,8 @@
                           </div>
                           <div class="fecha flex flex-col border-2 gap-1 p-4 rounded-lg">
                             <div class="text-lato text-base font-bold">Fecha Solicitada</div>
-                            @if (dateForm.value.date_start) { <div>Fecha de Inicio: {{ dateForm.value.date_start | date }}</div> }
-                            @if (dateForm.value.date_end) { <div>Fecha de Devolución: {{ dateForm.value.date_end | date }}</div> }
+                            @if (dateForm.value.date_start) { <div>Fecha de Inicio: {{ dateForm.value.date_start | date:'dd/MM/YYYY' }}</div> }
+                            @if (dateForm.value.date_end) { <div>Fecha de Devolución: {{ dateForm.value.date_end | date:'dd/MM/YYYY' }}</div> }
                             @if (dateForm.value.observation) { <div>Observaciones: {{ dateForm.value.observation }}</div> }
                           </div>
                           <div class="card">
@@ -123,7 +123,7 @@
                     </div>
                     <div class="flex pt-6 justify-between">
                         <p-button (onClick)="activateCallback(2)" label="Volver" severity="secondary" icon="pi pi-arrow-left" />
-                        <p-button (onClick)="confirmPurchease()" label="Confirmar" icon="pi pi-check" [loading]="loading" severity="success" iconPos="right" />
+                        <p-button (onClick)="confirmPurchease()" label="Confirmar" icon="pi pi-check" severity="success" iconPos="right" />
                     </div>
                 </ng-template>
             </p-step-panel>
@@ -131,3 +131,5 @@
     </p-stepper>
 </div>
 </div>
+
+<p-toast />

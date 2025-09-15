@@ -6,7 +6,7 @@ import { ContactComponent } from "../../components/contact/contact.component";
   selector: 'app-contacto',
   imports: [AccordionModule, ContactComponent],
   template: `
-  <div class="page-section">
+  <div class="page-section animate-fade-in">
     <div class="container flex flex-col gap-12">
       <div class="flex flex-col text-lato text-5xl text-[#3C5185]">
         <div class="font-bold">Preguntas frecuentes</div>
